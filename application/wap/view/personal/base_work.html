@@ -1,0 +1,194 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="main"}
+<?php
+    //p($info);
+    //die();
+?>
+<div class="page personal">
+    <div class="page__hd">
+        <h1 class="page__title">社会身份认证</h1>
+        <p class="page__desc">完成以下表单信息进行社会身份认证</p>
+    </div>
+    <div class="page__bd">
+        {if condition="$info.status eq 301"}
+            <div class="weui-cells weui-cells_form">
+            <div id="show_work_type" class="weui-cell weui-cell_access">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">当前职业</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="input_work_type"  class="weui-input" type="text" value="" placeholder="" readonly>
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label for="input_work_company" class="weui-label">单位名称</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="input_work_company" class="weui-input" type="text" value="" placeholder="请输入所在单位名称">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">单位电话</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="input_work_tel" class="weui-input" type="tel" value="" placeholder="请输入单位联系电话">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">单位地址</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="input_work_address" class="weui-input" type="text" value="" placeholder="请输入详细地址">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+        </div>
+        {else /}
+            {if condition="array_key_exists('data', $info)"}
+                {if condition="$info.data.status == 1 "}
+                <div class="weui-cells">
+                    <div class="weui-cell weui-cell_access">
+                        <div class="weui-cell__hd">
+                            <i class="weui-icon-warn"></i>
+                        </div>
+                        <div class="weui-cell__bd">审核失败</div>
+                        <div class="weui-cell__ft">
+                            {:$info.data.message}
+                        </div>
+                    </div>
+                </div>
+                {/if}
+            {/if}
+            <div class="weui-cells weui-cells_form">
+            <div id="show_work_type" class="weui-cell weui-cell_access">
+                <div class="weui-cell__hd">
+                    <label for="input_work_type" class="weui-label">当前职业</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="input_work_type" class="weui-input" type="text" value="{:$info['data']['identity']}" placeholder="" readonly>
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div id="show_work_area" class="weui-cell weui-cell_access" style="display: none;">
+                <div class="weui-cell__hd">
+                    <label for="input_work_area" class="weui-label">单位区域</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="input_work_area" class="weui-input" type="text" value="" placeholder="" readonly>
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label for="input_work_company" class="weui-label">单位名称</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="input_work_company" class="weui-input" type="text" value="{:$info['data']['company']}" placeholder="请输入所在单位名称">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label for="input_work_tel" class="weui-label">单位电话</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="input_work_tel" class="weui-input" type="tel" value="{:$info['data']['phone']}" placeholder="请输入单位联系电话">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label for="input_work_address" class="weui-label">单位地址</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="input_work_address" class="weui-input" type="text" value="{:$info['data']['address']}" placeholder="请输入详细地址">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+        </div>
+        {/if}
+        <div class="weui-btn-area">
+            {if condition="$info.status eq '301' or $info.data.status < 2 "}
+            <button id="btn_work_submit" disabled="disabled" class="weui-btn weui-btn_default">保存</button>
+            {else /}
+            {if condition="$info.data.status === 2 "}
+            <button class="weui-btn weui-btn_primary">正在认证中</button>
+            {else /}
+            <button class="weui-btn weui-btn_primary">认证成功</button>
+            {/if}
+            {/if}
+        </div>
+    </div>
+</div>
+{/block}
+{block name="style"}{/block}
+{block name="javascript"}
+<script type="text/javascript" src="/static/js/system/base_work.js?r={:$JavascriptVersion}"></script>
+<script type="text/javascript">
+    $(function () {
+        // 执行操作
+    });
+
+    $('#showArea').on('click', function () {
+        weui.picker([
+            {
+                label: 'A',
+                value: '1'
+            }, {
+                label: 'B',
+                value: '2'
+            }, {
+                label: 'C',
+                value: '3'
+            }
+        ], [
+            {
+                label: 'A',
+                value: 'A'
+            }, {
+                label: 'B',
+                value: 'B'
+            }, {
+                label: 'C',
+                value: 'C'
+            }
+        ], {
+            defaultValue: ['3', 'A'],
+            onChange: function (result) {
+                console.log(result);
+            },
+            onConfirm: function (result) {
+                console.log(result);
+            },
+            id: 'multiPickerBtn'
+        });
+    });
+</script>
+{/block}

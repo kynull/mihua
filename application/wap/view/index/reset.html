@@ -1,0 +1,71 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="main"}
+<div class="page login">
+    <div class="page__bd">
+        <div class="weui-cells  weui-cells_form">
+            <div class="weui-cell title">
+                <div class="weui-cell__hd"></div>
+                <div class="weui-cell-bd">
+                    <img alt="" src="/static/images/wx-logo.png" class="logo">
+                </div>
+            </div>
+            <div class="weui-cell input-form">
+                <div class="weui-cell__hd">
+                    <img src="/static/images/icon-phone.png" width="18" height="24" style="padding-right: 10px; display: block;">
+                </div>
+                <div class="weui-cell-bd">
+                    <input id="input_user_phone" class="weui-input" type="tel" disabled="disabled" value="{$phone}" placeholder="请输入手机号">
+                </div>
+            </div>
+            <div class="weui-cell input-form">
+                <div class="weui-cell__hd">
+                    <img src="/static/images/icon-mail.png" width="20" height="14" style="padding-right: 10px; display: block;">
+                </div>
+                <div class="weui-cell-bd">
+                    <input id="input_verify_code" class="weui-input" type="number" placeholder="请输入验证码">
+                </div>
+                <div class="weui-cell__ft">
+                    <button id="btn_send_verify_code" class="weui-vcode-btn">获取验证码</button>
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell input-form">
+                <div class="weui-cell__hd">
+                    <img data-v-7460f0a6="" src="/static/images/icon-key.png" width="10" height="18" style="padding-right: 10px; display: block;">
+                </div>
+                <div class="weui-cell-bd">
+                    <input id="input_user_password" class="weui-input" type="password" placeholder="请输入登录密码">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-btn-area">
+                <input id="input_user_reset" type="hidden" disabled="disabled" value="{$reset}" class="weui-input" readonly/>
+                <button id="btn_user_signup" disabled="disabled" class="weui-btn weui-btn_primary">确定</button>
+
+                <label for="weuiAgree" class="weui-agree">
+                    <input id="weuiAgree" type="checkbox" checked="checked" class="weui-agree__checkbox">
+                    <span class="weui-agree__text">我已阅读并同意<a href="{:url('Wap/Index/agreement')}">《米花金服注册协议》</a></span>
+                </label>
+            </div>
+
+        </div>
+    </div>
+</div>
+{/block}
+{block name="style"}
+<link rel="stylesheet" href="/static/css/login.css?r={:$JavascriptVersion}">
+{/block}
+{block name="javascript"}
+<script type="text/javascript" src="/static/js/system/user_signup.js?r={:$JavascriptVersion}"></script>
+<script type="text/javascript">
+    $(function () {
+        // 执行操作
+        SYS.Signup.init();
+    })
+</script>
+{/block}

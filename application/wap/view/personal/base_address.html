@@ -1,0 +1,61 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="main"}
+<div class="page personal">
+    <div class="page__hd">
+        <h1 class="page__title">居住地信息</h1>
+        <p class="page__desc">完善居住地信息</p>
+    </div>
+    <div class="page__bd">
+        <div class="weui-cells weui-cells_form">
+            <div id="id_live_period" class="weui-cell weui-cell_access">
+                <div class="weui-cell__hd">
+                    <label for="input_live_period" class="weui-label">居住时长</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="input_live_period" class="weui-input" type="text" value="{$info['period']}" placeholder="" readonly>
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div id="id_live_area" class="weui-cell weui-cell_access" style="display: none;">
+                <div class="weui-cell__hd">
+                    <label for="input_live_area" class="weui-label">居住时长</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="input_live_area" class="weui-input" type="text" value="{$info['area']}" placeholder="">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label for="input_live_address" class="weui-label">详细地址</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="input_live_address" class="weui-input" type="text" value="{$info['address']}" placeholder="请输入居住地详细地址">
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </div>
+        </div>
+
+        <div class="weui-btn-area">
+            <button id="btn_live_submit" disabled="disabled" class="weui-btn weui-btn_default">提交</button>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="style"}{/block}
+{block name="javascript"}
+<script type="text/javascript" src="/static/js/system/base_live.js?r={:$JavascriptVersion}"></script>
+<script type="text/javascript">
+    $(function () {
+        // 执行操作
+    });
+</script>
+{/block}

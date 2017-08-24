@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta charset="UTF-8">
+	<title>{$Think.config.website.name}－{block name="title"}Home{/block}</title>
+    {include file="public/style" /}
+	{block name="style"}<!-- Style-->{/block}
+    <script>
+        if(typeof(SYS)== "undefined"){var SYS={};}
+        SYS.host='__ROOT__';
+        SYS.path=window.location.host+SYS.host+'/index.php';
+    </script>
+</head>
+<body>
+    {include file="public/header" /}
+    <div class="container">
+        {block name="main"}<!-- 主内容-->{/block}
+    </div>
+    {include file="public/footer" /}
+    {include file="public/javascript" /}
+    <script type="text/javascript" src="/static/js/system/common.js"></script>
+    <script type="text/javascript" src="/static/js/system/form.js"></script>
+    <script type="text/javascript" src="/static/js/system/admin_base.js"></script>
+	{block name="javascript"}<!-- Javascript -->{/block}
+</body>
+</html>

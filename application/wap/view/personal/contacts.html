@@ -1,0 +1,131 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="main"}
+<div class="page personal">
+    <div class="page__hd">
+        <h1 class="page__title">紧急联系人</h1>
+        <p class="page__desc">完善紧急联系人，特殊情况以帮助尽快联系您</p>
+    </div>
+    <div class="page__bd">
+        {if condition="$info.status eq '301' or $info.data.status < 2 "}
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cells__title">直系亲属联系人</div>
+            <div id="show_lineal_relation" class="weui-cell weui-cell_access">
+                <div class="weui-cell__hd">
+                    <label for="input_lineal_relation" class="weui-label">与本人关系</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="input_lineal_relation" class="weui-input" type="text" value="" placeholder="" readonly>
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label for="input_lineal_name" class="weui-label">姓名</label></div>
+                <div class="weui-cell__bd">
+                    <input id="input_lineal_name" class="weui-input" type="text" value="" placeholder="输入联系人姓名">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label for="input_lineal_mobile" class="weui-label">联系方式</label></div>
+                <div class="weui-cell__bd">
+                    <input id="input_lineal_mobile" class="weui-input" type="number" pattern="[0-9]*" value="" placeholder="请输入联系人电话">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cells__title">其他联系人</div>
+            <div id="show_other_relation" class="weui-cell weui-cell_access">
+                <div class="weui-cell__hd">
+                    <label for="input_lineal_relation" class="weui-label">与本人关系</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="input_other_relation" class="weui-input" type="text" value="" placeholder="" readonly>
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label for="input_other_name" class="weui-label">姓名</label></div>
+                <div class="weui-cell__bd">
+                    <input id="input_other_name" class="weui-input" type="text" placeholder="输入联系人姓名">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label for="input_other_mobile" class="weui-label">联系方式</label></div>
+                <div class="weui-cell__bd">
+                    <input id="input_other_mobile" class="weui-input" type="number" pattern="[0-9]*" value="" placeholder="请输入联系人电话">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+        </div>
+        {else /}
+            {volist name="$info.data.details" id="vo"}
+                <div class="weui-cells weui-cells_form">
+                    <div class="weui-cells__title">
+                        {if condition="$vo.relations eq 'CR01'"}
+                            直系亲属联系人
+                        {else /}
+                            其他联系人
+                        {/if}
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label for="input_lineal_name" class="weui-label">姓名</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" type="text" value="{:$vo['cname']}" placeholder="输入联系人姓名">
+                        </div>
+                        <div class="weui-cell__ft">
+                            <i class="weui-icon-warn"></i>
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label for="input_lineal_name" class="weui-label">联系方式</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" type="number" value="{:$vo['mobile']}" placeholder="请输入联系人电话">
+                        </div>
+                        <div class="weui-cell__ft">
+                            <i class="weui-icon-warn"></i>
+                        </div>
+                    </div>
+                </div>
+            {/volist}
+        {/if}
+        <div class="weui-btn-area">
+            {if condition="$info.status eq '301' or $info.data.status < 2 "}
+                <button id="btn_contacts_submit" disabled="disabled" class="weui-btn weui-btn_default">保存</button>
+            {else /}
+                {if condition="$info.data.status === 2 "}
+                    <button class="weui-btn weui-btn_primary">正在认证中</button>
+                {else /}
+                    <button class="weui-btn weui-btn_primary">认证成功</button>
+                {/if}
+            {/if}
+        </div>
+    </div>
+</div>
+{/block}
+{block name="style"}{/block}
+{block name="javascript"}
+<script type="text/javascript" src="/static/js/system/contacts.js?r={:$JavascriptVersion}"></script>
+<script type="text/javascript">
+    $(function () {
+        // 执行操作
+    });
+
+</script>
+{/block}

@@ -1,0 +1,540 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="main"}
+<?php
+ //p($UserInfo);
+ //p($OrderInfo);
+?>
+<div class="page-header">
+    <h2>订单详情 <small></small></h2>
+</div>
+<ol class="breadcrumb">
+    <li><a href="{:url('www/Index/index')}">Home</a></li>
+    <li><a href="{:url('www/Order/index')}">订单列表</a></li>
+    <li class="active">订单详情</li>
+</ol>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="control-label">订单信息:</label>
+            <table class="table table-hover table-bordered table-condensed">
+                <thead>
+                <tr>
+                    <th>订单号</th>
+                    <th>申请额度</th>
+                    <th>使用时间</th>
+                    <th>转账金额</th>
+                    <th>当前状态</th>
+                    <th>申请时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="active">
+                    <td>
+                        {:$OrderInfo.id}
+                    </td>
+                    <td>
+                        {:number_format($OrderInfo.limit,2,".","")}
+                    </td>
+                    <td>
+                        {:$OrderInfo.period}
+                    </td>
+                    <td>
+                        {:number_format($OrderInfo.deposit,2,".","")}
+                    </td>
+                    <td>
+                        {:orderStatus($OrderInfo.status, $OrderInfo.progress)}
+                    </td>
+                    <td>
+                        {$OrderInfo.created_time |date='Y-m-d h:s:m',###}
+                    </td>
+                </tr>
+                {if condition="$OrderInfo.progress >= 1"}
+                    <tr>
+                        <td>
+                            {if condition="$OrderInfo.progress == 1"}
+                                审核失败
+                            {else/}
+                                审核通过
+                            {/if}
+                        </td>
+                        <td colspan="4">
+                            {$OrderInfo.message}
+                        </td>
+                        <td>
+                            {$OrderInfo.auditing_time |date='Y-m-d h:s:m',###}
+                        </td>
+                    </tr>
+                {/if}
+                {if condition="$OrderInfo.progress > 10"}
+                    <tr>
+                        <td>
+                            {if condition="$OrderInfo.progress == 10"}
+                                放款中
+                            {else/}
+                                已放款
+                            {/if}
+                        </td>
+                        <td colspan="4">
+                            {if condition="$OrderInfo.progress == 11"}
+                            {$OrderInfo.expire_time |date='Y-m-d h:s:m',###}到期
+                            {/if}
+                        </td>
+                        <td>
+                            {$OrderInfo.pay_time |date='Y-m-d h:s:m',###}
+                        </td>
+                    </tr>
+                {/if}
+                {if condition="$OrderInfo.progress >= 20 && $OrderInfo.expire_count < 4"}
+                    <tr>
+                        <td>
+                            {if condition="$OrderInfo.progress == 20"}
+                                延期失败
+                            {/if}
+                            {if condition="$OrderInfo.progress == 21"}
+                                银行扣款中
+                            {/if}
+                            {if condition="$OrderInfo.progress == 22"}
+                                延期中
+                            {/if}
+                        </td>
+                        <td colspan="3">
+                            剩余{$OrderInfo.expire_count}次
+                        </td>
+                        <td>
+                            延期总费用{$OrderInfo.expire_cost}元
+                        </td>
+                        <td>
+                            {$OrderInfo.expire_info}
+                        </td>
+                    </tr>
+                {/if}
+
+                {if condition="$OrderInfo.progress >= 30 && $OrderInfo.expireDay >= 0"}
+                <tr>
+                    <td>
+                        {if condition="$OrderInfo.expireDay > 0"}
+                            已逾期{$OrderInfo.expireDay}天
+                        {else/}
+                            未逾期
+                        {/if}
+                    </td>
+                    <td colspan="3">
+                        {if condition="$OrderInfo.expireDay > 0"}
+                            逾期费用{$OrderInfo.overdue_cost}元
+                        {/if}
+                    </td>
+                    <td>
+                        应还金额{$OrderInfo.overdue_cost + $OrderInfo.limit}元
+                    </td>
+                    <td>
+                        <button id="btn_repay_submit" type="button" class="btn btn-default">尝试扣款</button>
+                        <button id="btn_remind_submit" type="button" class="btn btn-default">催款提醒</button>
+                    </td>
+                </tr>
+                {/if}
+
+                {if condition="$OrderInfo.progress == 100"}
+                <tr>
+                    <td>
+                        已还款
+                    </td>
+                    <td colspan="4">
+                        还款{$OrderInfo.repay_cost}元
+                    </td>
+                    <td>
+                        {$OrderInfo.repay_time |date='Y-m-d h:s:m',###}
+                    </td>
+                </tr>
+                {/if}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">用户信息:</label>
+            <table class="table table-hover table-bordered table-condensed">
+                <thead>
+                <tr>
+                    <th>用户</th>
+                    <th>联系电话</th>
+                    <th>地址</th>
+                    <th>实名信息</th>
+                    <th>银行卡绑定</th>
+                    <th>紧急联系人</th>
+                    <th>单位信息</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="active">
+                    <td>
+                        {:$UserInfo.username}
+                    </td>
+                    <td>
+                        {:$UserInfo.phone}
+                    </td>
+                    <td>
+                        {:$UserInfo.address}
+                    </td>
+                    <td>
+                        <a href="{:url('www/User/idcard', ['id'=>$UserInfo.id])}">
+                            {$UserInfo.idcard | statusHTML}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{:url('www/User/bankcard', ['id'=>$UserInfo.id])}">
+                            {$UserInfo.bankcard | statusHTML}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{:url('www/User/contacts', ['id'=>$UserInfo.id])}">
+                            {$UserInfo.contacts | statusHTML}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{:url('www/User/work', ['id'=>$UserInfo.id])}">
+                            {$UserInfo.work | statusHTML}
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="form-group">
+        {if condition="$UserInfo.idcard == 3 && $UserInfo.bankcard == 3 && $UserInfo.contacts == 3 && $UserInfo.work == 3" && $UserInfo.username != ''"}
+            <button id="btn_risk_submit" type="button" class="btn btn-default">提交三方风控审核</button>
+            <table class="table table-hover table-bordered table-condensed">
+                <thead>
+                <tr>
+                    <th>审核编号</th>
+                    <th>状态</th>
+                    <th>决策原因编码</th>
+                    <th>决策原因</th>
+                </tr>
+                </thead>
+                <tbody>
+                {if condition="count($OrderRisk) > 0"}
+                {volist name="OrderRisk" id="vo"}
+                <tr class="active">
+                    <td>{$vo.noBus}</td>
+                    <td>{if condition="$vo.status == 9"} 审核通过 {else/} 未通过{/if}</td>
+                    <td>{$vo.reasonCode}</td>
+                    <td>{if condition="is_array($vo.reason)"}{:implode('|',$vo.reason)}{else/}{$vo.reason}{/if}</td>
+                </tr>
+                {/volist}
+                {/if}
+                <tr class="active">
+                    <td id="user_risk_no"></td>
+                    <td id="user_risk_status"></td>
+                    <td id="user_risk_reasonCode"></td>
+                    <td id="user_risk_reason"></td>
+                </tr>
+                </tbody>
+            </table>
+        {else/}
+            <p class="bg-danger">
+                资料未通过审核,不能提交三方风控
+            </p>
+        {/if}
+            </div>
+    </div>
+    <form class="form-horizontal" id="risk-form-hooks" onsubmit="return false;">
+        <div class="col-md-12 optional">
+            <input type="hidden" name="user_id" value="{:$UserInfo.id}">
+            <input type="hidden" name="id" value="{:$OrderInfo.id}">
+            <input type="hidden" name="repay_type" value="4" placeholder="一次性归还">
+            <input type="hidden" name="month_repayment" value="{:$OrderInfo.limit}" placeholder="每期应还款">
+            <input type="hidden" name="app_term" value="1" placeholder="申请期数">
+            <input type="hidden" name="loan_purpose" value="LP01" placeholder="贷款用途">
+            <input type="hidden" name="riskrank_bus" value="0" placeholder="商户提示风险等级">
+        </div>
+        <div class="col-md-6 optional">
+            <div class="form-group">
+                <label for="input_order_no" class="col-sm-3 control-label">申请单号</label>
+                <div class="col-sm-9">
+                    <input type="text" id="input_order_no" name="no_busb" class="form-control" value="{:$OrderInfo.id}" placeholder="订单号" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input_order_limit" class="col-sm-3 control-label">申请额度</label>
+                <div class="col-sm-9">
+                    <input type="text" id="input_order_limit" name="app_limit" class="form-control" value="{:$OrderInfo.limit}" placeholder="订单金额">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input_order_period" class="col-sm-3 control-label">订单时长</label>
+                <div class="col-sm-9">
+                    <input type="text" id="input_order_period" class="form-control" value="{:$OrderInfo.period}" placeholder="订单时长">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input_order_status" class="col-sm-3 control-label">订单状态</label>
+                <div class="col-sm-9" id="input_order_status">
+                    {:orderStatus($OrderInfo.status, $OrderInfo.progress)}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input_order_created" class="col-sm-3 control-label">申请时间</label>
+                <div class="col-sm-9">
+                    <input type="text" id="input_order_created" name="apply_time" class="form-control" value="{$OrderInfo.created_time |date='Y-m-d h:s:m',###}" placeholder="" readonly>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 optional">
+            <div class="form-group">
+                <label for="input_user_name" class="col-sm-3 control-label">用户名</label>
+                <div class="col-sm-9">
+                    <input type="text" id="input_user_name" name="name" class="form-control" value="{:$UserInfo.username}" placeholder="用户名">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input_user_phone" class="col-sm-3 control-label">用户电话</label>
+                <div class="col-sm-9">
+                    <input type="tel" id="input_user_phone" name="mobile"  class="form-control" value="{:$UserInfo.phone}" placeholder="注册号码" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input_user_email" class="col-sm-3 control-label">邮件</label>
+                <div class="col-sm-9">
+                    <input type="email" id="input_user_email" name="email" class="form-control" value="{:$UserInfo.email}" placeholder="没有填写邮件" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input_user_qq" class="col-sm-3 control-label">QQ</label>
+                <div class="col-sm-9">
+                    <input type="number" id="input_user_qq" class="form-control" value="{:$UserInfo.qq}" placeholder="没有填写QQ号码" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input_user_degrees" class="col-sm-3 control-label">学历</label>
+                <div class="col-sm-9">
+                    <input type="text" id="input_user_degrees" name="degrees" class="form-control" value="{:$UserInfo.degrees}" placeholder="没有填写学历" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input_user_marriage" class="col-sm-3 control-label">婚姻状态</label>
+                <div class="col-sm-9">
+                    <input type="text" id="input_user_marriage" name="marital_status" class="form-control" value="{:$UserInfo.marriage}" placeholder="没有填写婚姻状态" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="input_user_address" class="col-sm-3 control-label">现居住地</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="input_user_address" name="abode_add" class="form-control" value="{:$UserInfo.address}" placeholder="没有填写现居地址" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="abode_province_code" class="col-sm-3 control-label">现居[省]:</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="abode_province_code" name="abode_province_code" class="form-control" value="{:$UserInfo.province}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="abode_city_code" class="col-sm-3 control-label">现居[市]:</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="abode_city_code" name="abode_city_code" class="form-control" value="{:$UserInfo.city}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="abode_zone_code" class="col-sm-3 control-label">现居[区/县]:</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="abode_zone_code" name="abode_zone_code" class="form-control" value="{:$UserInfo.area}">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input_user_created" class="col-sm-3 control-label">注册时间</label>
+                <div class="col-sm-9">
+                    <input type="text" id="input_user_created" class="form-control" value="{$UserInfo.created_time |date='Y-m-d h:s:m',###}" placeholder="注册时间">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="id_type" class="col-sm-3 control-label">证件类型:</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="id_type" name="id_type" class="form-control" value="ID01">
+                    </div>
+                </div>
+                {if condition="array_key_exists('idcardDetail', $UserInfo) && count($UserInfo.idcardDetail) > 0"}
+                <div class="form-group">
+                    <label for="id_card" class="col-sm-3 control-label">证件号码:</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="id_card" name="id_card" class="form-control" value="{$UserInfo.idcardDetail.no}">
+                    </div>
+                </div>
+                {/if}
+            </div>
+            <div class="form-group">
+                {if condition="array_key_exists('bankcardDetail', $UserInfo) && count($UserInfo.bankcardDetail) > 0"}
+                <div class="form-group">
+                    <label for="bank_card_no" class="col-sm-3 control-label">银行卡号:</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="bank_card_no" name="bank_card_no" class="form-control" value="{$UserInfo.bankcardDetail.no}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="bank_code" class="col-sm-3 control-label">银行编码:</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="bank_code" name="bank_code" class="form-control" value="{$UserInfo.bankcardDetail.bank_code}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="bank_province_code" class="col-sm-3 control-label">银行地址[省]:</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="bank_province_code" name="bank_province_code" class="form-control" value="{$UserInfo.bankcardDetail.bank_province}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="bank_city_code" class="col-sm-3 control-label">银行地址[市]:</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="bank_city_code" name="bank_city_code" class="form-control" value="{$UserInfo.bankcardDetail.bank_city}">
+                    </div>
+                </div>
+                {/if}
+            </div>
+            <div class="form-group">
+                {if condition="array_key_exists('contactsDetail', $UserInfo) && count($UserInfo.contactsDetail) > 0"}
+                {volist name="$UserInfo.contactsDetail" id="vo"}
+                {if condition="in_array($vo['relations'], array('CR01','CR02','CR03','CR04','CR05','CR06'))"}
+                <div class="form-group">
+                    <label for="lineal_relation" class="col-sm-3 control-label">亲属关系:</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="lineal_relation" name="lineal_relation" class="form-control" value="{$vo.relations}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="lineal_name" class="col-sm-3 control-label">亲属关系:</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="lineal_name" name="lineal_name" class="form-control" value="{:$vo.cname}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="lineal_mobile" class="col-sm-3 control-label">亲属手机号:</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="lineal_mobile" name="lineal_mobile" class="form-control" value="{:$vo.mobile}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="lineal_address" class="col-sm-3 control-label">亲属地址:</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="lineal_address" name="lineal_address" class="form-control" value="{:$vo.address}">
+                    </div>
+                </div>
+                {else/}
+                <div class="form-group">
+                    <label for="other_relation" class="col-sm-3 control-label">联系人关系:</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="other_relation" name="other_relation" class="form-control" value="{$vo.relations}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="other_name" class="col-sm-3 control-label">联系人关系:</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="other_name" name="other_name" class="form-control" value="{:$vo.cname}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="lineal_mobile" class="col-sm-3 control-label">联系人手机号:</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="other_mobile" name="other_mobile" class="form-control" value="{:$vo.mobile}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="other_address" class="col-sm-3 control-label">联系人地址:</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="other_address" name="other_address" class="form-control" value="{:$vo.address}">
+                    </div>
+                </div>
+                {/if}
+                {/volist}
+                {/if}
+            </div>
+            <div class="form-group">
+                {if condition="array_key_exists('workDetail', $UserInfo) && count($UserInfo.workDetail) > 0"}
+                    <div class="form-group">
+                        <label for="social_identity" class="col-sm-3 control-label">社会身份:</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="social_identity" name="social_identity" class="form-control" value="{$UserInfo.workDetail.identity}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="emp_name" class="col-sm-3 control-label">单位名称:</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="emp_name" name="emp_name" class="form-control" value="{$UserInfo.workDetail.company}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="emp_tel" class="col-sm-3 control-label">联系电话:</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="emp_tel" name="emp_tel" class="form-control" value="{$UserInfo.workDetail.phone}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="emp_province_code" class="col-sm-3 control-label">地址[省]:</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="emp_province_code" name="emp_province_code" class="form-control" value="{$UserInfo.workDetail.province}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="emp_city_code" class="col-sm-3 control-label">地址[市]:</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="emp_city_code" name="emp_city_code" class="form-control" value="{$UserInfo.workDetail.city}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="emp_zone_code" class="col-sm-3 control-label">地址[区/县]:</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="emp_zone_code" name="emp_zone_code" class="form-control" value="{$UserInfo.workDetail.area}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="emp_add" class="col-sm-3 control-label">工作地址:</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="emp_add" name="emp_add" class="form-control" value="{$UserInfo.workDetail.address}">
+                        </div>
+                    </div>
+                {/if}
+            </div>
+        </div>
+        <div class="col-sm-12">
+            {if condition="$OrderInfo.progress < 10 && $OrderInfo.status != 2"}
+            <div class="form-group">
+                <label for="input_user_created" class="col-sm-2 control-label">驳回理由</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="input_audit_message" value="{$OrderInfo.message}" placeholder="审核结果">
+                </div>
+            </div>
+            {/if}
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+
+                    {if condition="$OrderInfo.progress < 10 && $OrderInfo.status != 2"}
+                    <button id="btn_order_submit" type="button" disabled="disabled" class="btn btn-default">立即驳回</button>
+                    {/if}
+                    {if condition="$OrderInfo.progress == 10 && $OrderInfo.status != 2"}
+                    <button id="btn_pay_submit" type="button" disabled="disabled" class="btn btn-default">财务确认支付</button>
+                    {/if}
+                    <!--<button id="btn_pay_query" type="button" class="btn btn-default">订单查询</button>-->
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+
+{block name="style"}
+<style>
+    .optional{display: none;}
+</style>
+{/block}
+{block name="javascript"}
+<script type="text/javascript" src="/static/js/system/admin_order.js"></script>
+<script>
+
+</script>
+{/block}

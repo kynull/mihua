@@ -1,0 +1,57 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="main"}
+<div class="page orders">
+    <div class="page__bd">
+        <div class="weui-cells">
+            {if condition="$total == 0"}
+            <div class="nothing">
+                <div class="weui-loadmore weui-loadmore_line">
+                    <span class="weui-loadmore__tips">没有找到您的借款记录</span>
+                </div>
+            </div>
+            <div class="weui-btn-area">
+                <a class="weui-btn weui-btn_default" href="{:url('Wap/Order/index')}">
+                    前往申请
+                </a>
+            </div>
+            {else/}
+                {volist name="orderList" id="vo"}
+                <a class="weui-cell weui-cell_access" href="{:url('Wap/Order/detail',['id'=>$vo.no])}">
+                    <div class="weui-cell__bd">
+                        <p>借款￥{$vo.limit}</p>
+                        <p style="font-size: 13px;color: #888888;">{$vo.created_time |date="Y-m-d h:s",###}</p>
+                    </div>
+                    <div class="weui-cell__ft">
+                        <span style="color: green;">{:\\app\\common\\tools\\Helper::getOrderStatus($vo.status,$vo.progress)}</span>
+                    </div>
+                </a>
+                {/volist}
+                <div class="pages">
+                    {$page}
+                </div>
+            {/if}
+        </div>
+    </div>
+</div>
+{/block}
+{block name="style"}{/block}
+{block name="javascript"}
+<script type="text/javascript">
+    //weui.alert('alert');
+
+    $(function () {
+        // 执行操作
+        var data = {};
+        $.post("{:url('api/index/index')}", data, function(res){
+            if (res.status !== 200) {
+                console.log(res.message);
+                return null;
+            }
+            console.log(res.data);
+        }, 'json');
+    })
+</script>
+{/block}

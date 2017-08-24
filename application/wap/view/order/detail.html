@@ -1,0 +1,277 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="main"}
+<?php
+    // p($orderDetail);
+?>
+<div class="page orders-detail">
+    <div class="page__hd">
+        <h1 class="page__title">借款详情</h1>
+        <p class="page__desc"></p>
+    </div>
+    <div class="page__bd">
+        <div class="weui-cells">
+            <div class="weui-cell">
+                <div class="timeline">
+                    <ul>
+                        {if condition="$OrderInfo.progress == 100"}
+                        <li class="timeline-item">
+                            <div class="timeline-item-color timeline-item-head">
+                                <i class="timeline-item-checked weui-icon weui_icon_success_no_circle weui-icon-success-no-circle"></i>
+                            </div>
+                            <div class="timeline-item-tail"></div>
+                            <div class="timeline-item-content">
+                                <h4>
+                                    还款成功
+                                    <small>还款{:number_format($OrderInfo.repay_cost,2,".","")}元</small>
+                                </h4>
+                                <p>&nbsp;
+                                    已于{$OrderInfo.repay_time |date='Y-m-d',###}还款成功
+                                </p>
+                            </div>
+                        </li>
+                        {/if}
+                        {if condition="$OrderInfo.progress == 30"}
+                        <li class="timeline-item">
+                            <div class="timeline-item-color timeline-item-head">
+                                <i class="timeline-item-checked weui-icon weui_icon_success_no_circle weui-icon-success-no-circle"></i>
+                            </div>
+                            <div class="timeline-item-tail"></div>
+                            <div class="timeline-item-content">
+                                <h4>
+                                    您已逾期{$OrderInfo.expire_count}天
+                                    <small>逾期费用{:number_format($OrderInfo.overdue_cost,2,".","")}元</small>
+                                </h4>
+                                <p>&nbsp;
+                                    请尽快还款以免继续产生逾期费用!
+                                </p>
+                            </div>
+                        </li>
+                        {/if}
+                        {if condition="$OrderInfo.progress >= 20"}
+                            {if condition="$OrderInfo.progress == 21"}
+                                <li class="timeline-item">
+                                    <div class="timeline-item-color timeline-item-head">
+                                        <i class="timeline-item-checked weui-icon weui_icon_success_no_circle weui-icon-success-no-circle"></i>
+                                    </div>
+                                    <div class="timeline-item-tail"></div>
+                                    <div class="timeline-item-content">
+                                        <h4>
+                                            延期申请中
+                                            <small>待付款</small>
+                                        </h4>
+                                        <p>&nbsp;
+                                            请确保银行卡有足够金额扣本次手续费
+                                        </p>
+                                    </div>
+                                </li>
+                            {/if}
+                            {if condition="$OrderInfo.progress == 20"}
+                                <li class="timeline-item">
+                                    <div class="timeline-item-color timeline-item-head">
+                                        <i class="timeline-item-checked weui-icon weui_icon_success_no_circle weui-icon-success-no-circle"></i>
+                                    </div>
+                                    <div class="timeline-item-tail"></div>
+                                    <div class="timeline-item-content">
+                                        <h4>
+                                            延期失败
+                                            <small></small>
+                                        </h4>
+                                        <p>&nbsp;
+                                            请确保银行卡有足够金额扣本次手续费
+                                        </p>
+                                    </div>
+                                </li>
+                            {/if}
+
+                            {if condition="$OrderInfo.progress == 22"}
+                                <li class="timeline-item">
+                                    <div class="timeline-item-color timeline-item-head">
+                                        <i class="timeline-item-checked weui-icon weui_icon_success_no_circle weui-icon-success-no-circle"></i>
+                                    </div>
+                                    <div class="timeline-item-tail"></div>
+                                    <div class="timeline-item-content">
+                                        <h4>
+                                            延期成功
+                                            <small>剩余{$OrderInfo.expire_count}次</small>
+                                        </h4>
+                                        <p>&nbsp;
+                                            请于{$OrderInfo.expire_time |date='Y-m-d',###}前还款,还剩{:timediff($OrderInfo.expire_time, time())['day']}天
+                                        </p>
+                                    </div>
+                                </li>
+                            {/if}
+                        {/if}
+                        {if condition="$OrderInfo.progress == 11"}
+                        <li class="timeline-item">
+                            <div class="timeline-item-color timeline-item-head">
+                                <i class="timeline-item-checked weui-icon weui_icon_success_no_circle weui-icon-success-no-circle"></i>
+                            </div>
+                            <div class="timeline-item-tail"></div>
+                            <div class="timeline-item-content">
+                                <h4>
+                                    用款中
+                                    <small></small>
+                                </h4>
+                                <p>&nbsp;
+                                    请于{$OrderInfo.expire_time |date='Y-m-d',###}前还款,还剩{:timediff($OrderInfo.expire_time, time())['day']}天
+                                </p>
+                            </div>
+                        </li>
+
+
+                        {/if}
+                        {if condition="$OrderInfo.progress >= 11"}
+                        <li class="timeline-item">
+                            <div class="timeline-item-color timeline-item-head">
+                                <i class="timeline-item-checked weui-icon weui_icon_success_no_circle weui-icon-success-no-circle"></i>
+                            </div>
+                            <div class="timeline-item-tail"></div>
+                            <div class="timeline-item-content">
+                                <h4>
+                                    放款成功
+                                    <small>{$OrderInfo.pay_time |date='Y-m-d H:s',###}</small>
+                                </h4>
+                                <p>&nbsp;
+                                </p>
+                            </div>
+                        </li>
+                        {/if}
+                        {if condition="$OrderInfo.progress == 10"}
+                        <li class="timeline-item">
+                            <div class="timeline-item-color timeline-item-head-first">
+                                <i class="timeline-item-checked weui-icon weui_icon_success_no_circle weui-icon-success-no-circle"></i>
+                            </div>
+                            <div class="timeline-item-tail"></div>
+                            <div class="timeline-item-content">
+                                <h4>等待财务放款</h4>
+                                <p>财务正在处理中,请耐心等待</p>
+                            </div>
+                        </li>
+                        {/if}
+                        {if condition="$OrderInfo.progress >= 1"}
+                        <li class="timeline-item">
+                            <div class="timeline-item-color timeline-item-head">
+                                <i class="timeline-item-checked weui-icon weui_icon_success_no_circle weui-icon-success-no-circle"></i>
+                            </div>
+                            <div class="timeline-item-tail"></div>
+                            <div class="timeline-item-content">
+                                <h4>
+                                    {if condition="$OrderInfo.progress == 1"}
+                                        风控审核未通过
+                                    {else/}
+                                        风控审核已通过
+                                    {/if}
+                                    <small>{$OrderInfo.auditing_time |date='Y-m-d H:s',###}</small>
+                                </h4>
+                                <p>&nbsp;
+                                    {if condition="$OrderInfo.progress == 1"}
+                                        {$OrderInfo.message}
+                                    {/if}
+                                </p>
+                            </div>
+                        </li>
+                        {/if}
+
+                        {if condition="$OrderInfo.status == 2"}
+                            <li class="timeline-item">
+                            <div class="timeline-item-color timeline-item-head">
+                                <i class="timeline-item-checked weui-icon weui_icon_success_no_circle weui-icon-success-no-circle"></i>
+                            </div>
+                            <div class="timeline-item-tail"></div>
+                            <div class="timeline-item-content">
+                                <h4>
+                                    订单已取消
+                                    <small></small>
+                                </h4>
+                                <p>&nbsp;
+                                </p>
+                            </div>
+                        </li>
+                        {else/}
+                            {if condition="$OrderInfo.progress == 0"}
+                            <li class="timeline-item">
+                                <div class="timeline-item-color timeline-item-head-first">
+                                    <i class="timeline-item-checked weui-icon weui_icon_success_no_circle weui-icon-success-no-circle"></i>
+                                </div>
+                                <div class="timeline-item-tail"></div>
+                                <div class="timeline-item-content">
+                                    <h4>风控审核中</h4>
+                                    <p>风控正在审核,请耐心等待</p>
+                                </div>
+                            </li>
+                            {/if}
+                        {/if}
+
+
+                        {if condition="$OrderInfo.progress >= 0"}
+                        <li class="timeline-item">
+                            <div class="timeline-item-color timeline-item-head">
+                                <i class="timeline-item-checked weui-icon weui_icon_success_no_circle weui-icon-success-no-circle"></i>
+                            </div>
+                            <div class="timeline-item-tail"></div>
+                            <div class="timeline-item-content">
+                                <h4>
+                                    申请提交成功
+                                    <small>{$OrderInfo.created_time |date='Y-m-d H:s',###}</small>
+                                </h4>
+                                <p>申请借款￥{:number_format($OrderInfo.limit,2,".","")}元，期限{:$OrderInfo.period}天，综合费用￥{:number_format($OrderInfo.limit - $OrderInfo.deposit,2,".","")}元</p>
+                            </div>
+                        </li>
+                        {/if}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="weui-btn-area">
+            <form id="form_handle_order" action="{:url('Wap/Order/delay')}" method="post">
+            <input type="hidden" id="input_order_id" name="id" value="{:$OrderInfo.id}">
+            <input type="hidden" id="input_order_no" name="no" value="{:$OrderInfo.no}">
+            </form>
+            {if condition="$OrderInfo.status == 0"}
+                <button id="btn_confirm_submit" class="weui-btn weui-btn_primary">确认订单</button>
+            {/if}
+            {if condition="$OrderInfo.progress == 0 && $OrderInfo.status == 1"}
+                <button id="btn_cancel_submit" class="weui-btn weui-btn_primary">取消申请</button>
+            {/if}
+            {if condition="$OrderInfo.progress >= 11 && $OrderInfo.progress != 100"}
+                {//if condition="timediff($OrderInfo.expire_time, time())['day'] < 2 && $OrderInfo.expire_count > 0"}
+                <button id="btn_delay_submit" class="weui-btn weui-btn_default">
+                    {if condition="$OrderInfo.progress eq '21' "}
+                    重新支付
+                    {else/}
+                    申请续期
+                    {/if}
+                </button>
+                {//if}
+                <button id="btn_repay_submit" class="weui-btn weui-btn_default">立即还款</button>
+            {/if}
+
+            <?php
+                //p($OrderInfo);
+            ?>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="style"}{/block}
+{block name="javascript"}
+<script type="text/javascript" src="/static/js/system/order_details.js?r={:$JavascriptVersion}"></script>
+<script type="text/javascript">
+    //weui.alert('alert');
+
+    $(function () {
+        // 执行操作
+        var data = {};
+        $.post("{:url('api/index/index')}", data, function(res){
+            if (res.status !== 200) {
+                console.log(res.message);
+                return null;
+            }
+            console.log(res.data);
+        }, 'json');
+    })
+</script>
+{/block}

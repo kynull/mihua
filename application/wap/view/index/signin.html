@@ -1,0 +1,56 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="main"}
+<div class="page login">
+    <div class="page__bd">
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell title">
+                <div class="weui-cell__hd"></div>
+                <div class="weui-cell-bd">
+                    <img alt="" src="/static/images/wx-logo.png" class="logo">
+                </div>
+            </div>
+            <div class="weui-cell input-form">
+                <div class="weui-cell__hd">
+                    <img src="/static/images/icon-phone.png" width="12" height="18" style="padding-right: 10px; display: block;">
+                </div>
+                <div class="weui-cell-bd">
+                    <input id="input_user_phone" class="weui-input" disabled="disabled" type="tel" value="{$phone}" placeholder="请输入手机号">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell input-form">
+                <div class="weui-cell__hd">
+                    <img src="/static/images/icon-key.png" width="10" height="18" style="padding-right: 10px; display: block;">
+                </div>
+                <div class="weui-cell-bd">
+                    <input id="input_user_password" class="weui-input" type="password" placeholder="请输入登录密码">
+                </div>
+                <div class="weui-cell__ft">
+                    <button id="btn_forget_password" class="weui-vcode-btn">忘记密码</button>
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-btn-area">
+                <button id="btn_user_signin" disabled="disabled" class="weui-btn weui-btn_primary" href="javascript:">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="style"}
+<link rel="stylesheet" href="/static/css/login.css?r={:$JavascriptVersion}">
+{/block}
+{block name="javascript"}
+<script type="text/javascript" src="/static/js/system/user_signin.js?r={:$JavascriptVersion}"></script>
+<script type="text/javascript">
+    $(function () {
+        // 执行操作
+        SYS.Signin.init();
+    })
+</script>
+{/block}

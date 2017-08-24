@@ -1,0 +1,141 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="main"}
+<?php
+ //p($Info);
+?>
+<div class="page-header">
+    <h2>单位审核 <small>用户单位信息</small></h2>
+</div>
+<ol class="breadcrumb">
+    <li><a href="{:url('www/Index/index')}">Home</a></li>
+    <li><a href="{:url('www/User/index')}">用户列表</a></li>
+    <li class="active">单位审核</li>
+</ol>
+<div class="row">
+    <form class="form-horizontal">
+        <div class="col-xs-12 col-md-6">
+            <div class="other_info">
+                <input type="hidden" id="input_user_id" name="user_id" value="{:$Info.id}">
+            </div>
+            <div class="form-group">
+                <label for="input_user_phone" class="col-sm-2 control-label">注册号码</label>
+                <div class="col-sm-10">
+                    <input type="tel" class="form-control" id="input_user_phone" value="{:$Info.phone}" placeholder="注册号码" readonly>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="input_audit_status" class="col-sm-2 control-label">认证状态</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="input_audit_status" value="{$Info.work |status}" placeholder="认证状态" readonly>
+                </div>
+            </div>
+            {if condition="array_key_exists('workDetail', $Info) && count($Info.workDetail) > 0"}
+            <div class="form-group">
+                <label for="input_work_identity" class="col-sm-2 control-label">社会身份</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="input_work_identity" value="{:$Info.workDetail.identity}" placeholder="没有填写社会身份" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input_work_company" class="col-sm-2 control-label">单位名称</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="input_work_company" value="{:$Info.workDetail.company}" placeholder="没有填写单位名称" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input_work_address" class="col-sm-2 control-label">单位地址</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="input_work_address" value="{:$Info.workDetail.address}" placeholder="没有填写单位地址" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input_work_phone" class="col-sm-2 control-label">单位电话</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="input_work_phone" value="{:$Info.workDetail.phone}" placeholder="没有填写单位电话" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input_work_job" class="col-sm-2 control-label">职位</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="input_work_job" value="{:$Info.workDetail.job}" placeholder="没有填写职位" readonly>
+                </div>
+            </div>
+            {if condition="array_key_exists('chsi', $Info.workDetail) && $Info.workDetail.chsi !=''"}
+            <div class="form-group">
+                <label for="input_work_chsi" class="col-sm-2 control-label">其他信息</label>
+                <div class="col-sm-10">
+                    <div class="col-sm-4" id="input_work_chsi">
+                        <label for="images_work_chsi" class="control-label">学信网截图</label>
+                        <img id="images_work_chsi" src="/uploads/{:$Info.workDetail.chsi}" alt="学信网截图" class="img-thumbnail">
+                    </div>
+                </div>
+            </div>
+            {/if}
+
+            <div class="form-group">
+                <label for="input_audit_message" class="col-sm-2 control-label">审核理由</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="input_audit_message" value="{:$Info.workDetail.message}" placeholder="审核理由,认证驳回必填">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button id="btn_faile_submit" type="button" disabled="disabled" class="btn btn-default">认证失败</button>
+                    <button id="btn_success_submit" type="button" disabled="disabled" class="btn btn-default">认证成功</button>
+                </div>
+            </div>
+            {/if}
+        </div>
+        <div class="col-md-6 hidden-xs hidden-sm">
+            <div class="form-group">
+                <label for="input_user_address" class="col-sm-2 control-label">现居地</label>
+                <div class="col-sm-10">
+                    <input type="tel" class="form-control" id="input_user_address" value="{:$Info.address}" placeholder="没有填写现居地址" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input_user_email" class="col-sm-2 control-label">邮件</label>
+                <div class="col-sm-10">
+                    <input type="tel" class="form-control" id="input_user_email" value="{:$Info.email}" placeholder="没有填写邮件" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input_user_qq" class="col-sm-2 control-label">QQ</label>
+                <div class="col-sm-10">
+                    <input type="tel" class="form-control" id="input_user_qq" value="{:$Info.qq}" placeholder="没有填写QQ号码" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input_user_degrees" class="col-sm-2 control-label">学历</label>
+                <div class="col-sm-10">
+                    <input type="tel" class="form-control" id="input_user_degrees" value="{:$Info.degrees}" placeholder="没有填写学历" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input_user_marriage" class="col-sm-2 control-label">婚姻状态</label>
+                <div class="col-sm-10">
+                    <input type="tel" class="form-control" id="input_user_marriage" value="{:$Info.marriage}" placeholder="没有填写婚姻状态" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input_user_created" class="col-sm-2 control-label">注册时间</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="input_user_created" value="{$Info.created_time |date='Y-m-d h:s:m',###}" placeholder="注册时间">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+
+{block name="style"}{/block}
+{block name="javascript"}
+<script type="text/javascript" src="/static/js/system/admin_work.js"></script>
+<script>
+
+</script>
+{/block}

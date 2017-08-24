@@ -1,0 +1,38 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="main"}
+<div class="row">
+    <div class="col-md-8">
+        <ul class="list-group" style="display: none;">
+            <li class="list-group-item">
+                <a href="{:url('www/Index/static')}">静态</a>
+            </li>
+            <li class="list-group-item">
+                <a href="{:url('www/Index/hello', ['name' => '开开'])}">个人中心</a>
+            </li>
+        </ul>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a href="{:url('www/Order/index')}">订单管理</a>
+            </li>
+            <li class="list-group-item">
+                <a href="{:url('www/user/index')}">用户管理</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-4">
+        <!-- 右边 -->
+    </div>
+</div>
+{/block}
+{block name="style"}{/block}
+{block name="javascript"}
+<script type="text/javascript">
+
+$(function () {
+    // 执行操作
+})
+</script>
+{/block}

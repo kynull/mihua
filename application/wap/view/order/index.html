@@ -1,0 +1,151 @@
+{extend name="base" /}
+
+{block name="title"}{$siteTitle}{/block}
+
+{block name="main"}
+<div class="page orders-detail">
+    <div class="page__hd header-box">
+        <div class="credit-card">
+            <div style="height: 200px; position: relative; overflow: hidden;">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="600" height="400" id="blurred_1jyls25qh" class="vux-bg-blur" viewBox="0 0 600 400" preserveAspectRatio="none" style="opacity: 1;">
+                    <filter id="blur_1jyls25qh">
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="40"></feGaussianBlur>
+                    </filter>
+                    <image x="0" y="0" width="80%" height="250" externalResourcesRequired="true" NS1:href="https://o3e85j0cv.qnssl.com/tulips-1083572__340.jpg" style="filter:url(#blur_1jyls25qh)" preserveAspectRatio="none"></image>
+                </svg>
+                <p class="author">
+                    <img src="https://o3e85j0cv.qnssl.com/tulips-1083572__340.jpg" class="logo">
+                </p>
+                <div class="weui-panel weui-panel_access card-info">
+                    <div class="weui-panel__bd">
+                        <div class="card-content">
+                            <div class="card-flex card-content">
+                                <div class="quota">
+                                    <span>信用额度</span>
+                                    <p class="amount">1500.00元</p>
+                                </div>
+                                <div class="progress">
+                                    <a href="{:url('Wap/Personal/index')}">
+                                        <span class="msg">已完成认证</span>
+                                        <span class="step">{$VerifyStatus}/4</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="weui-panel__ft"><!--
+                    <?php
+                        p($UserInfo);
+                    ?>
+                    --></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page__bd">
+        <div class="weui-cells addform">
+            <div class="addform-group">
+                <div class="weui-slider-box loan-amount">
+                    <div id="sliderStart" class="weui-slider-box__value">500</div>
+                    <div id="sliderStep" class="weui-slider">
+                        <div id="sliderInner" class="weui-slider__inner">
+                            <div id="sliderTrack" style="width: 50%;" class="weui-slider__track"></div>
+                            <div id="sliderHandler" style="left: 50%;" class="weui-slider__handler"></div>
+                        </div>
+                    </div>
+                    <div id="sliderEnd" class="weui-slider-box__value">1500</div>
+
+                </div>
+            </div>
+            <div class="weui-flex addform-group">
+                <div class="weui-flex__item">
+                    <a href="javascript:;" class="weui-btn weui-btn_default btn-period-item">5天</a>
+                </div>
+                <div class="weui-flex__item">
+                    <a href="javascript:;" class="weui-btn weui-btn_default weui-btn_disabled btn-period-item">10天</a>
+                </div>
+            </div>
+            <div class="addform-group">
+                <div class="weui-flex card-content">
+                    <div class="weui-flex__item quota">
+                        <span>到账金额(元)</span>
+                        <p id="currentBankroll" class="amount">435.00</p>
+                    </div>
+                    <div class="weui-flex__item cost">
+                        <span style="display: inline-block;position: relative;">
+                            综合费用(元)
+                            <a id="expenseDetail" href="javascript:;" class="weui-badge" style="position: absolute;top: -2px;right: -23px;">!</a>
+                        </span>
+                        <p id="currentCost" class="amount">142.50</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="weui-btn-area">
+            <a id="submit_add_form" href="javascript:;" class="weui-btn weui-btn_default">马上申请</a>
+        </div>
+    </div>
+</div>
+
+<div id="dialogs">
+    <!--BEGIN dialog2-->
+    <div class="js_dialog" id="detailDialog" style="display: none;">
+        <div class="weui-mask"></div>
+        <div class="weui-dialog">
+            <div id="dialogMessage" class="weui-dialog__bd"></div>
+            <div class="weui-dialog__ft">
+                <a href="javascript:;" id="dialogBottom" class="weui-dialog__btn weui-dialog__btn_primary">关闭</a>
+            </div>
+        </div>
+    </div>
+    <!--END dialog2-->
+</div>
+{/block}
+{block name="style"}{/block}
+{block name="javascript"}
+<script type="text/javascript" src="/static/js/system/orders.js?r={:$JavascriptVersion}"></script>
+<script type="text/javascript">
+    //weui.alert('alert');
+
+    (function(){
+        var cost = {$loanCost};
+        var manage = {$loanManage};
+        var bankroll = [
+            {volist name="loanBankroll" id="vo"}
+                {
+                amount: {$vo.amount},
+                rate: {$vo.rate}
+                },
+            {/volist}
+        ];
+        var period = [
+            {volist name="loanPeriod" id="vo"}
+            {
+                amount: {$vo.amount},
+                rate: {$vo.rate}
+            },
+            {/volist}
+        ];
+
+
+        SYS.Order.init(cost, manage, bankroll, period);
+    })();
+    $(document).ready(function(){
+        //
+    });
+    $(function () {
+        // 执行操作
+        var data = {
+            token: SYS.cookie('token')
+        };
+        $.post("{:url('api/Order/info')}", data, function(res){
+            if (res.status !== 200) {
+                console.log(res.message);
+                return null;
+            }
+            console.log(res.data);
+        }, 'json');
+    })
+</script>
+{/block}

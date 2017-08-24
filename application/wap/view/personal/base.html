@@ -1,0 +1,65 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="main"}
+<div class="page personal">
+    <div class="page__hd">
+        <h1 class="page__title">基础信息</h1>
+        <p class="page__desc">完善基础信息</p>
+    </div>
+    <div class="page__bd">
+        <div class="weui-cells">
+            <a class="weui-cell weui-cell_access" href="{:url('Personal/idcard')}">
+                <div class="weui-cell__bd">
+                    <label class="weui-label">{:$userInfo.username}</label>
+                    <p style="font-size: 13px;color: #888888;">实名认证(必填项)</p>
+                </div>
+                <div class="weui-cell__ft">
+                    {$userInfo.idcard | statusHTML}
+                </div>
+            </a>
+
+            <a class="weui-cell weui-cell_access" href="{:url('Personal/work')}">
+                <div class="weui-cell__bd">
+                    <label class="weui-label">社会身份</label>
+                    <p style="font-size: 13px;color: #888888;">在社会中的角色(必填项)</p>
+                </div>
+                <div class="weui-cell__ft">
+                    {$userInfo.work | statusHTML}
+                </div>
+            </a>
+
+            <a class="weui-cell weui-cell_access" href="{:url('Personal/address')}">
+                <div class="weui-cell__bd">
+                    <label class="weui-label">居住地</label>
+                    <p style="font-size: 13px;color: #888888;">当前主要居住地信息</p>
+                </div>
+                <div class="weui-cell__ft">
+                    {if condition="$userInfo.address eq ''"}
+                        <span style="color: orange;">未填写</span>
+                    {else/}
+                        <span style="color: green;">已填写</span>
+                    {/if}
+                </div>
+            </a>
+
+            <a class="weui-cell weui-cell_access" href="{:url('Personal/other')}">
+                <div class="weui-cell__bd">
+                    <label class="weui-label">其他</label>
+                    <p style="font-size: 13px;color: #888888;">其他信息</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="style"}{/block}
+{block name="javascript"}
+<script type="text/javascript">
+    $(function () {
+        // 执行操作
+    })
+</script>
+{/block}

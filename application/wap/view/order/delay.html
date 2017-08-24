@@ -1,0 +1,81 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="style"}{/block}
+{block name="javascript"}
+<script type="text/javascript" src="/static/js/system/delay.js?r={:$JavascriptVersion}"></script>
+<script type="text/javascript">
+    $(function () {
+        // 执行操作
+    })
+</script>
+{/block}
+{block name="main"}
+<?php
+    //p($OrderInfo);
+    //p($DecuctInfo);
+    //die();
+?>
+<div class="page orders">
+    <div class="page__bd">
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">借款金额</label>
+                </div>
+                <div class="weui-cell__bd">
+                    第{:$DecuctInfo.pay_type}次续期
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">续期天数</label>
+                </div>
+                <div class="weui-cell__bd">
+                    {:$DecuctInfo.days}天
+                </div>
+            </div>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">续期手续费</label>
+                </div>
+                <div class="weui-cell__bd">
+                    ￥{:number_format($DecuctInfo.amount,2,".","")}
+                </div>
+            </div>
+        </div>
+        <div class="weui-cells weui-cells_form">
+
+            <div class="weui-cell repay">
+                <div class="weui-cell__bd">
+                    您需要在{$DecuctInfo['days']}天后还款{:number_format($OrderInfo.limit,2,".","")}元
+                </div>
+            </div>
+
+        </div>
+        <div class="weui-btn-area">
+            <form id="form_handle_delay" action="{:url('Wap/Order/delayPay')}" method="post">
+            <input type="hidden" id="input_order_id" name="oid" value="{:$OrderInfo.id}">
+            <input type="hidden" id="input_deduct_id" name="id" value="{:$DecuctInfo.id}">
+            <input type="hidden" id="input_deduct_no" name="no" value="{:$DecuctInfo.created_time}">
+            <input type="hidden" id="input_user_token" name="token" value="">
+            </form>
+            <buttom id="btn_delay_submit" class="weui-btn weui-btn_default btn-submit">
+                {if condition="$IsRepay eq '0' "}
+                    确认支付
+                {else/}
+                    立即支付
+                {/if}
+            </buttom>
+
+            <label for="weuiAgree" class="weui-agree">
+                <input id="weuiAgree" type="checkbox" checked="checked" class="weui-agree__checkbox">
+                <span class="weui-agree__text">我已阅读并同意<a href="javascript:;">《续期协议》</a></span>
+            </label>
+        </div>
+    </div>
+</div>
+{/block}

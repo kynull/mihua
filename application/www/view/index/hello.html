@@ -1,0 +1,17 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="style"}{/block}
+{block name="javascript"}{/block}
+
+{block name="main"}
+    <div class="row">
+      <div class="col-md-8">
+        Hello,{$name}！
+      </div>
+      <div class="col-md-4">
+        <!-- 右边 -->
+      </div>
+    </div>
+{/block}

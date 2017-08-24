@@ -1,0 +1,93 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="main"}
+<?php
+    // p($OrderList);
+?>
+<div class="page-header">
+    <h2>订单列表 <small></small></h2>
+</div>
+<ol class="breadcrumb">
+    <li><a href="{:url('www/Index/index')}">Home</a></li>
+    <li class="active">订单列表</li>
+</ol>
+<div class="row">
+    <div class="col-md-12" style="">
+        <form class="form-horizontal" action="{:url('Www/Order/index')}" method="post">
+            <div class="input-group">
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">类型 <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="{:url('Www/Order/index', ['type'=>2])}">待审核</a></li>
+                        <li><a href="{:url('Www/Order/index', ['type'=>3])}">待放款</a></li>
+                        <li><a href="{:url('Www/Order/index', ['type'=>20])}">用款中</a></li>
+                        <li><a href="{:url('Www/Order/index', ['type'=>30])}">已逾期</a></li>
+                        <li><a href="{:url('Www/Order/index', ['type'=>100])}">已还款</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{:url('Www/Order/index', ['type'=>0])}">待确认</a></li>
+                        <li><a href="{:url('Www/Order/index', ['type'=>1])}">用户取消</a></li>
+                        <li><a href="{:url('Www/Order/index')}">全部</a></li>
+                    </ul>
+                </div><!-- /btn-group -->
+                <input type="text" id="input_search_key" name="key" class="form-control" value="{:$key}" placeholder="请输入借款用户名或合同编号">
+                <div class="input-group-btn">
+                    <button id="btn_search_submit" type="submit" class="btn btn-primary">查询</button>
+                </div>
+            </div><!-- /input-group -->
+        </form>
+    </div>
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered table-condensed">
+                <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>用户名</th>
+                    <th>用户电话</th>
+                    <th>额度[元]</th>
+                    <th>天数[天]</th>
+                    <th>状态</th>
+                    <th>申请时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {volist name="OrderList" id="vo"}
+                <tr class="active">
+                    <td>{$vo.id}</td>
+                    <td>{$vo.user.username}</td>
+                    <td>{$vo.user.phone}</td>
+                    <td>{$vo.limit}</td>
+                    <td>{$vo.period}</td>
+                    <td>{:orderStatus($vo.status, $vo.progress)}</td>
+                    <td>{$vo.created_time |date='Y-m-d h:s:m',###}</td>
+                    <td>
+                        <a href="{:url('www/Order/detail', ['id'=>$vo.no])}">详情</a>
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-sm-6">
+            共查询到{$total}条记录
+        </div>
+        <div class="col-sm-6" style="text-align: right;">
+            {$page}
+        </div>
+        <!-- 右边 -->
+    </div>
+</div>
+{/block}
+{block name="style"}
+<style>
+    .pagination {
+        margin: 0 auto;
+    }
+</style>
+{/block}
+{block name="javascript"}{/block}

@@ -1,0 +1,138 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="main"}
+<div class="page personal">
+    <div class="page__hd">
+        <h1 class="page__title">实名认证</h1>
+        <p class="page__desc">完成以下表单信息进行实名认证</p>
+    </div>
+    <div class="page__bd">
+        {if condition="$info.status eq '301' or $info.data.status < 2 "}
+        {if condition="array_key_exists('data', $info)"}
+            {if condition="$info.data.status == 1 "}
+            <div class="weui-cells">
+                <div class="weui-cell weui-cell_access">
+                    <div class="weui-cell__hd">
+                        <i class="weui-icon-warn"></i>
+                    </div>
+                    <div class="weui-cell__bd">审核失败</div>
+                    <div class="weui-cell__ft">
+                        {:$info.data.message}
+                    </div>
+                </div>
+            </div>
+            {/if}
+        {/if}
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label for="input_user_name" class="weui-label">姓名</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="input_user_name" class="weui-input" type="text" value="" placeholder="输入您的姓名">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label for="input_idcard_no" class="weui-label">身份证号</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="input_idcard_no" class="weui-input" type="text" value="" placeholder="输入身份证号码">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__hd">
+                    <div class="weui-uploader__input-box weui-uploader__file"  style="background-image:url('/static/images/idcard_front_picture.jpg')">
+                        <input id="input_idcard_front" name="idcard" class="weui-uploader__input" type="file" accept="image/*" multiple="">
+                    </div>
+                </div>
+                <div class="weui-cell__bd">
+                    <p>身份证正面</p>
+                    <p style="font-size: 13px;color: #888888;">请上传身份证正面</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__hd">
+                    <div class="weui-uploader__input-box weui-uploader__file"  style="background-image:url('/static/images/idcard_back_picture.jpg')">
+                        <input id="input_idcard_back" name="idcard" class="weui-uploader__input" type="file" accept="image/*" multiple="">
+                    </div>
+                </div>
+                <div class="weui-cell__bd">
+                    <p>身份证背面</p>
+                    <p style="font-size: 13px;color: #888888;">请上传身份证背面</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__hd">
+                    <div class="weui-uploader__input-box weui-uploader__file"  style="background-image:url('/static/images/idcard_face_picture.jpg')">
+                        <input id="input_idcard_face" name="idcard" class="weui-uploader__input" type="file" accept="image/*" multiple="">
+                    </div>
+                </div>
+                <div class="weui-cell__bd">
+                    <p>手持身份证</p>
+                    <p style="font-size: 13px;color: #888888;">请选择手持身份证</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+        </div>
+        {else /}
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">姓名</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" value="{$info.data.username}" placeholder="输入您的姓名">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">身份证号</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" value="{$info.data.no}" placeholder="输入身份证号码">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+        </div>
+        {/if}
+        <div class="weui-btn-area">
+            {if condition="$info.status eq '301' or $info.data.status < 2 "}
+                <button id="btn_submit_idcard" disabled="disabled" class="weui-btn weui-btn_default">申请认证</button>
+            {else /}
+                {if condition="$info.data.status === 2 "}
+                    <button class="weui-btn weui-btn_primary">正在认证中</button>
+                {else /}
+                    <button class="weui-btn weui-btn_primary">认证成功</button>
+                {/if}
+            {/if}
+        </div>
+    </div>
+</div>
+{/block}
+{block name="style"}{/block}
+{block name="javascript"}
+<script type="text/javascript" src="/static/lib/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="/static/lib/jquery.fileupload.js"></script>
+<script type="text/javascript" src="/static/js/system/base_idcard.js?r={:$JavascriptVersion}"></script>
+<script type="text/javascript">
+    $(function () {
+
+    })
+</script>
+{/block}

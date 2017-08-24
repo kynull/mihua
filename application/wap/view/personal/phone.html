@@ -1,0 +1,78 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="main"}
+<div class="page personal">
+    <div class="page__hd">
+        <h1 class="page__title">手机运营商认证</h1>
+        <p class="page__desc">请填写手机运营商信息</p>
+    </div>
+    <div class="page__bd">
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label for="input_user_mobile" class="weui-label">手机号</label></div>
+                <div class="weui-cell__bd">
+                    <input id="input_user_mobile" disabled="disabled" class="weui-input" type="tel" value="{$info['phone']}" placeholder="必须为本人名下手机号">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_vcode">
+                <div class="weui-cell__hd">
+                    <label for="input_service_code" class="weui-label">服务密码</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="input_service_code" class="weui-input" type="text" placeholder="请输入手机服务密码">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                    <button id="btn_forget_service_code" class="weui-vcode-btn" style="font-size: 14px;">忘记密码</button>
+                </div>
+            </div>
+        </div>
+        <div class="weui-btn-area">
+            {if condition="$info.phonestatus < 2 "}
+                <button id="btn_phone_submit" disabled="disabled" class="weui-btn weui-btn_default">保存</button>
+            {else /}
+                {if condition="$info.phonestatus === 2 "}
+                    <button class="weui-btn weui-btn_primary">正在认证中</button>
+                {else /}
+                    <button class="weui-btn weui-btn_primary">认证成功</button>
+                {/if}
+            {/if}
+        </div>
+        <label for="input_agree" class="weui-agree">
+            <input id="input_agree" type="checkbox" checked class="weui-agree__checkbox">
+            <span class="weui-agree__text">
+                    我已阅读并同意<a href="{:url('Wap/Personal/operator')}">《运营商授权协议》</a>
+                </span>
+        </label>
+        <div class="weui-cells">
+            <div class="weui-cells__title">温馨提示</div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">1.</div>
+                <div class="weui-cell__bd">
+                    <span style="font-size: 12px;">请输入正确的运营商（移动、联通、电信）服务密码，如若忘记可通过拨打运营商服务电话或者登陆网上营业厅找回密码;</span>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">2.</div>
+                <div class="weui-cell__bd">
+                    <span style="font-size: 12px;">运营商认证需要2~3分钟，请耐心等待;</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="style"}{/block}
+{block name="javascript"}
+<script type="text/javascript" src="/static/js/system/phone.js?r={:$JavascriptVersion}"></script>
+<script type="text/javascript">
+    $(function () {
+        // 执行操作
+    })
+</script>
+{/block}

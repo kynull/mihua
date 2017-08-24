@@ -1,0 +1,165 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="style"}{/block}
+{block name="javascript"}
+<script type="text/javascript" src="/static/js/system/bank.js?r={:$JavascriptVersion}"></script>
+<script type="text/javascript">
+    $(function () {
+        // 执行操作
+    })
+</script>
+{/block}
+
+{block name="main"}
+<div class="page personal">
+    <div class="page__hd">
+        <h1 class="page__title">银行卡绑定</h1>
+        <p class="page__desc">绑定后所借款项将发放到该卡</p>
+    </div>
+    <div class="page__bd">
+        <?php
+            //p($BankInfo);
+        ?>
+        {if condition="$BankInfo.status eq '301' or $BankInfo.data.status < 2 "}
+        <form id="form_band_bankcard" action="{:url('Wap/Personal/bandBankCard')}" method="post" onsubmit="return SYS.BankCard._validateForm();">
+            <div class="weui-cells weui-cells_form">
+                <div class="weui-cells__title">请填写银行卡信息</div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label for="input_bank_idname" class="weui-label">持卡人</label></div>
+                    <div class="weui-cell__bd">
+                        <input id="input_bank_idname" name="idname" class="weui-input" type="text" value="" placeholder="必须为本人名下银行卡">
+                    </div>
+                    <div class="weui-cell__ft">
+                        <i class="weui-icon-warn"></i>
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label for="input_bank_idcard" class="weui-label">证件号码</label></div>
+                    <div class="weui-cell__bd">
+                        <input id="input_bank_idcard" name="idcardno" class="weui-input" type="number" pattern="[0-9]*" value="" placeholder="请输入您的身份证号">
+                    </div>
+                    <div class="weui-cell__ft">
+                        <i class="weui-icon-warn"></i>
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label for="input_bankcard_no" class="weui-label">银行卡号</label></div>
+                    <div class="weui-cell__bd">
+                        <input id="input_bankcard_no" name="bankcardno" class="weui-input" type="number" pattern="[0-9]*" value="" placeholder="请输入您的收款银行卡">
+                    </div>
+                    <div class="weui-cell__ft">
+                        <i class="weui-icon-warn"></i>
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">银行名称</label></div>
+                    <div class="weui-cell__bd">
+                        <input id="input_bank_name" name="bank_name" class="weui-input" type="text" value="" placeholder="银行名称" readonly>
+                        <input id="input_bank_code" name="bank_code" type="hidden" value="">
+                    </div>
+                    <div class="weui-cell__ft">
+                        <i class="weui-icon-warn"></i>
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">卡类型</label></div>
+                    <div class="weui-cell__bd">
+                        <input id="input_card_type_name" class="weui-input" type="text" value="" placeholder="卡类型" readonly>
+                        <input id="input_card_type" name="card_type" type="hidden" value="">
+                    </div>
+                    <div class="weui-cell__ft">
+                        <i class="weui-icon-warn"></i>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        {else /}
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cells__title">请填写银行卡信息</div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">持卡人</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" value="{$BankInfo.data.username}" placeholder="必须为本人名下银行卡">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">证件号码</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" pattern="[0-9]*" value="{$BankInfo.data.idcard}" placeholder="请输入您的身份证号">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">银行卡号</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" pattern="[0-9]*" value="{$BankInfo.data.no}" placeholder="请输入您的收款银行卡">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">卡类型</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" value="{$BankInfo.data.card_type == '2' ? '储蓄卡' : '信用卡' }" placeholder="银行名称" readonly>
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">银行名称</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" value="{$BankInfo.data.bank_name}" placeholder="银行名称" readonly>
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+        </div>
+        {/if}
+
+        <div class="weui-btn-area">
+            <input type="hidden" id="input_user_token" name="token" value="">
+            {if condition="$BankInfo.status eq '301' or $BankInfo.data.status < 2 "}
+            <button id="btn_bank_submit" disabled="disabled" class="weui-btn weui-btn_default">提交绑卡申请</button>
+            {else /}
+                {if condition="$BankInfo.data.status === 2 "}
+                    <button class="weui-btn weui-btn_primary">正在认证中</button>
+                {else /}
+                    <button class="weui-btn weui-btn_primary">认证成功</button>
+                {/if}
+            {/if}
+        </div>
+        <div class="weui-cells">
+            <div class="weui-cells__title">温馨提示</div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">1.</div>
+                <div class="weui-cell__bd">
+                    <span style="font-size: 12px;">借款通过申请后，我们将会将您的所借款项发放到该张银行卡；</span>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">2.</div>
+                <div class="weui-cell__bd">
+                    <span style="font-size: 12px;">若申请重新绑卡，则新卡将被激活为收款银行卡；</span>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">3.</div>
+                <div class="weui-cell__bd">
+                    <span style="font-size: 12px;">未完成借款期间不允许更换银行卡；</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

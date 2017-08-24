@@ -1,0 +1,83 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="main"}
+<div class="row">
+    <div class="col-md-8">
+        <form class="form-horizontal" id="login-form-hooks" onsubmit="return false;">
+            <div class="form-group">
+                <label for="user_mobile" class="col-sm-2 control-label">电话</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="phone" id="user_mobile" placeholder="您的电话">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="user_password" class="col-sm-2 control-label">密匙</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" name="password"  id="user_password" placeholder="输入登录密码">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label>
+                            <input name="remember" type="checkbox"> 记住
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">登录</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <!-- 右边 -->
+        没有账号?请联系管理员
+    </div>
+</div>
+{/block}
+{block name="style"}{/block}
+{block name="javascript"}
+{js href="__JS__/jquery.validate.min.js" /}
+<script type="text/javascript">
+
+    $(function () {
+        //这个控件，验证通过执行提交
+        $("#login-form-hooks").validate({
+            submitHandler: function () {
+                doLogin();
+            }
+        })
+    })
+    function doLogin() {
+        $(function(){
+            var data = $('#login-form-hooks').serialize();
+            if (data) {
+                $.post('{:url("/api/user/signin")}', data, function(res){
+                    if (typeof(res)==='object') {
+                        console.log('登录结果:',res)
+                        switch (res.status) {
+                            case 200:
+                                SYS.cookie('token', res.data.token, {expires: res.data.expires, path: "/"});
+                                SYS.cookie('tokenExpires', res.data.expires, {expires: res.data.expires, path: "/"});
+
+                                window.location.href = SYS.url.U('Www/Index/index');
+                                break;
+                            default:
+                                SYS.toast.show('error', res.message);
+                                break;
+                        }
+                    } else {
+                        SYS.toast.show('error', '服务器连接错误');
+                    }
+                }, 'json');
+            }
+        })
+        return false;
+    }
+</script>
+{/block}

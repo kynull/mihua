@@ -1,0 +1,546 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="main"}
+<div class="row">
+    <form action=""></form>
+    <form class="form-horizontal" id="risk-form-hooks" action="{url('www/risk/do')}" onsubmit="return false;">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="id_coop" class="col-sm-2 control-label">商户编码(*)</label>
+                <div class="col-sm-10">
+                    <input id="id_coop" name="id_coop" type="text" value="78fb6q93d14cua0bbsa9aa49ebe601y3" class="form-control" placeholder="商户编码">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="no_busb" class="col-sm-2 control-label">商户申请单号</label>
+                <div class="col-sm-10">
+                    <input id="no_busb" name="no_busb" type="text" class="form-control" value="201705030947330652147483647" placeholder="商户申请单号">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="prod_code" class="col-sm-2 control-label">产品代码:</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="prod_code" name="prod_code" placeholder="2">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="prod_type" class="col-sm-2 control-label">产品类型:</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="prod_type" name="prod_type" placeholder="2">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="prod_sub_code" class="col-sm-2 control-label">产品子编码:</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="prod_sub_code" name="prod_sub_code" placeholder="">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="loan_purpose" class="col-sm-2 control-label">贷款用途:</label>
+                <div class="col-sm-10">
+                    <select id="loan_purpose" name="loan_purpose" class="form-control">
+                        <option value="LP01">家用电器</option>
+                        <option value="LP02">数码产品</option>
+                        <option value="LP03">国内教育</option>
+                        <option value="LP04">出境留学</option>
+                        <option value="LP05">装修</option>
+                        <option value="LP06">婚庆</option>
+                        <option value="LP07">旅游</option>
+                        <option value="LP08">租赁</option>
+                        <option value="LP09">医疗</option>
+                        <option value="LP10">美容</option>
+                        <option value="LP11">家其</option>
+                        <option value="LP12">生活用品</option>
+                        <option value="LP99" selected>其它</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="app_limit" class="col-sm-2 control-label">申请额度(*)</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="app_limit" name="app_limit" value="1000" placeholder="4498">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="app_term" class="col-sm-2 control-label">申请期数(*)</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="app_term" name="app_term" value="1" placeholder="12">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="apply_time" class="col-sm-2 control-label">申请时间(*)</label>
+                <div class="col-sm-10">
+                    <input type="datetime" class="form-control" id="apply_time" name="apply_time" value="2017-05-03 09:49:49" placeholder="2017-05-03 09:49:49">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="repay_type" class="col-sm-2 control-label">还款方式:</label>
+                <div class="col-sm-10">
+                    <select id="repay_type" name="repay_type" class="form-control">
+                        <option value="1">按月归还</option>
+                        <option value="2">按季归还</option>
+                        <option value="3">按年归还</option>
+                        <option value="4" selected>一次性归还</option>
+                        <option value="5">其它</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="month_repayment" class="col-sm-2 control-label">每期应还款:</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="month_repayment" name="month_repayment" placeholder="374.83">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="annual_rate" class="col-sm-2 control-label">年利率:</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="annual_rate" name="annual_rate" placeholder="0.576">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="down_payment" class="col-sm-2 control-label">首付款:</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="down_payment" name="down_payment" placeholder="0">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="insurance_rate" class="col-sm-2 control-label">保险费率:</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="insurance_rate" name="insurance_rate" placeholder="0">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="insurance_amt" class="col-sm-2 control-label">insurance_amt:</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="insurance_amt" name="insurance_amt" placeholder="0">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="riskrank_bus" class="col-sm-2 control-label">风险等级:</label>
+                <div class="col-sm-10">
+                    <select id="riskrank_bus" name="riskrank_bus" class="form-control">
+                        <option value="0">无风险</option>
+                        <option value="1" selected>有风险</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="user_name" class="col-sm-2 control-label">姓名(*)</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="user_name" name="name" value="陈明华" placeholder="张三">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="user_mobile" class="col-sm-2 control-label">电话(*)</label>
+                <div class="col-sm-10">
+                    <input type="tel" class="form-control" id="user_mobile" name="mobile" value="18623652567" placeholder="13588888888">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="user_email" class="col-sm-2 control-label">常用邮件:</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="user_email" name="email" value="18623652567@qq.com" placeholder="13588888888@qq.com">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="marital_status" class="col-sm-2 control-label">婚姻状况:</label>
+                <div class="col-sm-10">
+                    <select id="marital_status" name="marital_status" class="form-control">
+                        <option value="10">未婚</option>
+                        <option value="20">已婚</option>
+                        <option value="21">初婚</option>
+                        <option value="22">再婚</option>
+                        <option value="23">复婚</option>
+                        <option value="30">丧偶</option>
+                        <option value="40">离婚</option>
+                        <option value="90">其它</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="social_identity" class="col-sm-2 control-label">社会身份:</label>
+                <div class="col-sm-10">
+                    <select id="social_identity" name="social_identity" class="form-control">
+                        <option value="SI01">学生</option>
+                        <option value="SI02">在职人员</option>
+                        <option value="SI04">企业负责人</option>
+                        <option value="SI03">自由职业</option>
+                        <option value="SI05">无业</option>
+                        <option value="SI06">退休</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="is_create_sales" class="col-sm-2 control-label">is_create_sales:</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="is_create_sales" name="is_create_sales" placeholder="1">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_type" class="col-sm-2 control-label">证件类型</label>
+                <div class="col-sm-10">
+                    <select id="id_type" name="id_type" class="form-control">
+                        <option value="ID01">身份证</option>
+                        <option value="ID02">户口簿</option>
+                        <option value="ID03">护照</option>
+                        <option value="ID04">军官证</option>
+                        <option value="ID05">士兴证</option>
+                        <option value="ID06">港澳居民来往内地通行证</option>
+                        <option value="ID07">台湾同胞来往内地通行证</option>
+                        <option value="ID08">临时身份证</option>
+                        <option value="ID09">外国人居留证</option>
+                        <option value="ID10">警官证</option>
+                        <option value="ID11">香港身份证</option>
+                        <option value="ID12">澳门身份证</option>
+                        <option value="ID13">台湾身份证</option>
+                        <option value="ID99">其它证件</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_card" class="col-sm-2 control-label">证件号码(*)</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="id_card" name="id_card" value="500235198512047650" placeholder="500235198512047650">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_photo" class="col-sm-2 control-label">手持身份证(*)</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="id_photo" name="id_photo" placeholder="">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_front" class="col-sm-2 control-label">身份证正面(*)</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="id_front" name="id_front" placeholder="">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_back" class="col-sm-2 control-label">身份证背面(*)</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="id_back" name="id_back" placeholder="">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="abode_province_code" class="col-sm-2 control-label">现居[省](*)</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="abode_province_code" name="abode_province_code" placeholder="640000">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="abode_city_code" class="col-sm-2 control-label">现居[市](*)</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="abode_city_code" name="abode_city_code" placeholder="640300">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="abode_zone_code" class="col-sm-2 control-label">现居[区/县](*)</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="abode_zone_code" name="abode_zone_code" placeholder="640324">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="abode_add" class="col-sm-2 control-label">现居地址(*)</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="abode_add" name="abode_add" placeholder="同心县城北第四小学旁边">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lineal_relation" class="col-sm-2 control-label">联系人关系(*)</label>
+                <div class="col-sm-10">
+                    <select id="lineal_relation" name="lineal_relation" class="form-control">
+                        <option value="CR01">配偶</option>
+                        <option value="CR02">父亲</option>
+                        <option value="CR03">母亲</option>
+                        <option value="CR04">兄弟</option>
+                        <option value="CR05">姐妹</option>
+                        <option value="CR06">子女</option>
+                        <option value="CR07">同学</option>
+                        <option value="CR08">同事</option>
+                        <option value="CR09">朋友</option>
+                        <option value="CR99">其他</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lineal_name" class="col-sm-2 control-label">联系人姓名(*)</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="lineal_name" name="lineal_name" placeholder="李四">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lineal_mobile" class="col-sm-2 control-label">联系人手机号(*)</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="lineal_mobile" name="lineal_mobile" placeholder="15288888888">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lineal_address" class="col-sm-2 control-label">联系人地址:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="lineal_address" name="lineal_address" placeholder="同心县下马关镇">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="bank_card_no" class="col-sm-2 control-label">银行卡号:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="bank_card_no" name="bank_card_no" value="6228481208182083970" placeholder="6228481208182083970">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="bank_code" class="col-sm-2 control-label">银行编码:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="bank_code" name="bank_code" placeholder="103">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="bank_province_code" class="col-sm-2 control-label">银行地址[省]:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="bank_province_code" name="bank_province_code" placeholder="640000">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="bank_city_code" class="col-sm-2 control-label">银行地址[市]:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="bank_city_code" name="bank_city_code" placeholder="640300">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="emp_name" class="col-sm-2 control-label">工作单位名称:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="emp_name" name="emp_name" placeholder="宁夏灵武市宁东镇宁东铝厂">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="emp_tel" class="col-sm-2 control-label">单位联系电话:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="emp_tel" name="emp_tel" placeholder="18388888888">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="emp_province_code" class="col-sm-2 control-label">工作地址[省]:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="emp_province_code" name="emp_province_code" placeholder="640000">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="emp_city_code" class="col-sm-2 control-label">工作地址[市]:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="emp_city_code" name="emp_city_code" placeholder="640100">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="emp_zone_code" class="col-sm-2 control-label">工作地址[区/县]:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="emp_zone_code" name="emp_zone_code" placeholder="640181">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="emp_add" class="col-sm-2 control-label">工作地址:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="emp_add" name="emp_add" placeholder="宁夏灵武市宁东镇工业园区">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="acct_type" class="col-sm-2 control-label">账号类型(*)</label>
+                <div class="col-sm-10">
+                    <select id="acct_type" name="acct_type" class="form-control">
+                        <option value="AC01">QQ 号</option>
+                        <option value="AC02">淘宝账号</option>
+                        <option value="AC03">京东账号</option>
+                        <option value="AC04">微信号</option>
+                        <option value="AC05">钉钉</option>
+                        <option value="AC51">公积金</option>
+                        <option value="AC52">社保</option>
+                        <option value="AC53">个人版征信</option>
+                        <option value="AC54">运营商</option>
+                        <option value="AC81">终端短信</option>
+                        <option value="AC82">终端通讯录</option>
+                        <option value="AC83">终端通话记录</option>
+                        <option value="AC99">其他</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="acct_id" class="col-sm-2 control-label">账号名称(*)</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="acct_id" name="acct_id" placeholder="">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="password" class="col-sm-2 control-label">密码</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="password" name="password" placeholder="">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="auth_status" class="col-sm-2 control-label">授权情况</label>
+                <div class="col-sm-10">
+                    <select id="auth_status" name="auth_status" class="form-control">
+                        <option value="1">授权成功</option>
+                        <option value="0">授权失败</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="auth_type" class="col-sm-2 control-label">授权类型</label>
+                <div class="col-sm-10">
+                    <select id="auth_type" name="auth_type" class="form-control">
+                        <option value="0">未授权</option>
+                        <option value="1">登陆查询</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="auth_token" class="col-sm-2 control-label">授权关系唯一号</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="auth_token" name="auth_token" placeholder="">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="userAgent" class="col-sm-2 control-label">浏览器信息:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="userAgent" name="userAgent" placeholder="">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="getPluginsString" class="col-sm-2 control-label">浏览器插件:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="getPluginsString" name="getPluginsString" placeholder="">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="fingerprint" class="col-sm-2 control-label">设备指纹:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="fingerprint" name="fingerprint" placeholder="">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="getCanvasFingerprint" class="col-sm-2 control-label">画布指纹:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="getCanvasFingerprint" name="getCanvasFingerprint" placeholder="">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="eid" class="col-sm-2 control-label">eid:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="eid" name="eid" placeholder="">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="colorDepth" class="col-sm-2 control-label">colorDepth:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="colorDepth" name="colorDepth" placeholder="">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="cpuClass" class="col-sm-2 control-label">cpuClass:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="cpuClass" name="cpuClass" placeholder="">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="doNotTrack" class="col-sm-2 control-label">doNotTrack:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="doNotTrack" name="doNotTrack" placeholder="">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="addBehavior" class="col-sm-2 control-label">addBehavior:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="addBehavior" name="addBehavior" placeholder="">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="hasIndexDb" class="col-sm-2 control-label">hasIndexDb:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="hasIndexDb" name="hasIndexDb" placeholder="">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="hasLocalStorage" class="col-sm-2 control-label">hasLocalStorage:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="hasLocalStorage" name="hasLocalStorage" placeholder="">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="hasSessionStorage" class="col-sm-2 control-label">hasSessionStorage:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="hasSessionStorage" name="hasSessionStorage" placeholder="">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="language" class="col-sm-2 control-label">language:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="language" name="language" placeholder="">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="openDatabase" class="col-sm-2 control-label">openDatabase:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="openDatabase" name="openDatabase" placeholder="">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="platform" class="col-sm-2 control-label">platform:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="platform" name="platform" placeholder="">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="resolution" class="col-sm-2 control-label">resolution:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="resolution" name="resolution" placeholder="">
+                </div>
+            </div>
+            <div class="form-group optional">
+                <label for="timezone" class="col-sm-2 control-label">timezone:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="timezone" name="timezone" placeholder="">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button id="btn_risk_submit" type="submit" class="btn btn-default">认证</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <!-- 右边 -->
+        </div>
+    </form>
+</div>
+{/block}
+{block name="style"}
+<style>
+    .optional{
+        display: none;
+    }
+</style>
+{/block}
+{block name="javascript"}
+{js href="__JS__/jquery.validate.min.js" /}
+<script type="text/javascript">
+
+    $(function () {
+        //这个控件，验证通过执行提交
+        $("#risk-form-hooks").validate({
+            submitHandler: function () {
+                doRisk();
+            }
+        })
+    })
+    function doRisk() {
+        $(function(){
+            var data = $('#risk-form-hooks').serialize();
+            if (data) {
+                $.post('{:url("/www/risk/do")}', data, function(o){
+                    console.log('返回数据:', o);
+                }, 'json');
+            }
+        })
+        return false;
+    }
+</script>
+{/block}

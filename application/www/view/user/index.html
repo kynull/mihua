@@ -1,0 +1,168 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="main"}
+
+<div class="page-header">
+    <h2>用户列表 <small></small></h2>
+</div>
+<ol class="breadcrumb">
+    <li><a href="{:url('www/Index/index')}">Home</a></li>
+    <li class="active">用户列表</li>
+</ol>
+<div class="row">
+    <div class="col-md-12" style="">
+        <form class="form-horizontal" action="{:url('Www/User/index')}" method="post">
+            <div class="input-group">
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">类型 <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="{:url('Www/User/index', ['type'=>2])}">待认证</a></li>
+                        <li><a href="{:url('Www/User/index', ['type'=>3])}">认证成功</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{:url('Www/User/index', ['type'=>1])}">未填写</a></li>
+                        <li><a href="{:url('Www/User/index')}">全部</a></li>
+                    </ul>
+                </div><!-- /btn-group -->
+                <input type="text" id="input_search_key" name="key" class="form-control" value="{:$key}" placeholder="请输入用户名或用户电话">
+                <div class="input-group-btn">
+                    <button id="btn_search_submit" type="submit" class="btn btn-primary">查询</button>
+                </div>
+            </div><!-- /input-group -->
+        </form>
+    </div>
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered table-condensed">
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>用户名</th>
+                        <th>注册手机</th>
+                        <th>服务密码</th>
+                        <th>服务商</th>
+                        <th>实名</th>
+                        <th>银行卡</th>
+                        <th>紧急联系人</th>
+                        <th>社会身份</th>
+                        <th>权限</th>
+                        <th>详细资料</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {volist name="List" id="vo"}
+                    <tr class="active">
+                        <td>{$vo.id}</td>
+                        <td>{$vo.username}</td>
+                        <td>{$vo.phone}</td>
+                        <td>{$vo.phonecode}</td>
+                        <td>{$vo.phonestatus | statusHTML}</td>
+                        <td><a href="{:url('www/User/idcard', ['id'=>$vo.id])}">{$vo.idcard | statusHTML}</a></td>
+                        <td><a href="{:url('www/User/bankcard', ['id'=>$vo.id])}">{$vo.bankcard | statusHTML}</a></td>
+                        <td><a href="{:url('www/User/contacts', ['id'=>$vo.id])}">{$vo.contacts | statusHTML}</a></td>
+                        <td><a href="{:url('www/User/work', ['id'=>$vo.id])}">{$vo.work | statusHTML}</a></td>
+                        <td>
+                            {if condition="$vo.role >50"}
+                                管理员
+                            {else/}
+                                用户
+                            {/if}
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#showModal" data-email="{$vo.email}" data-qq="{$vo.qq}" data-degrees="{$vo.degrees}" data-marriage="{$vo.marriage}" data-created="{$vo.created_time |date='Y-m-d h:s',###}">查看</button>
+                            </div>
+                        </td>
+                    </tr>
+                    {/volist}
+                </tbody>
+            </table>
+        </div>
+        <div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">用户资料</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="input_user_email" class="col-sm-4 col-md-3 control-label">邮箱:</label>
+                                <div class="col-sm-8 col-md-9">
+                                    <input type="text" class="form-control email" id="input_user_email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="input_user_qq" class="col-sm-4 col-md-3 control-label">QQ:</label>
+                                <div class="col-sm-8 col-md-9">
+                                    <input type="text" class="form-control qq" id="input_user_qq">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="input_user_degrees" class="col-sm-4 col-md-3 control-label">学历:</label>
+                                <div class="col-sm-8 col-md-9">
+                                    <input type="text" class="form-control degrees" id="input_user_degrees">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="input_user_marriage" class="col-sm-4 col-md-3 control-label">婚姻状况:</label>
+                                <div class="col-sm-8 col-md-9">
+                                    <input type="text" class="form-control marriage" id="input_user_marriage">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="input_user_created" class="col-sm-4 col-md-3 control-label">注册时间:</label>
+                                <div class="col-sm-8 col-md-9">
+                                    <input type="text" class="form-control created" id="input_user_created">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">返 回</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </div>
+    <div class="col-md-12">
+        <div class="col-sm-6">
+            共查询到{$total}条记录
+        </div>
+        <div class="col-sm-6" style="text-align: right;">
+            {$page}
+        </div>
+        <!-- 右边 -->
+    </div>
+</div>
+{/block}
+
+{block name="style"}
+<style>
+    .pagination {
+        margin: 0 auto;
+    }
+</style>
+{/block}
+{block name="javascript"}
+<script>
+    $('#showModal').on('shown.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var email = button.data('email');
+        var qq = button.data('qq');
+        var degrees = button.data('degrees');
+        var marriage = button.data('marriage');
+        var created = button.data('created');
+
+        var modal = $(this);
+        modal.find('.modal-title').text('用户资料');
+        modal.find('.modal-body .email').val(email);
+        modal.find('.modal-body .qq').val(qq);
+        modal.find('.modal-body .degrees').val(degrees);
+        modal.find('.modal-body .marriage').val(marriage);
+        modal.find('.modal-body .created').val(created);
+    })
+</script>
+{/block}

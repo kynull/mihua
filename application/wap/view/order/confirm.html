@@ -1,0 +1,137 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="main"}
+<?php
+    //p($OrderInfo);
+    //die();
+?>
+<div class="page orders">
+    <div class="page__bd">
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">借款金额</label>
+                </div>
+                <div class="weui-cell__bd">
+                    ￥{:number_format($OrderInfo.limit,2,".","")}
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">借款期限</label>
+                </div>
+                <div class="weui-cell__bd">
+                    {$OrderInfo['period']}天
+                </div>
+            </div>
+        </div>
+        {if condition="$OrderCost.deposit > 0"}
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">综合费用</label>
+                </div>
+                <div class="weui-cell__bd">
+                    ￥{:number_format(floatval($OrderCost.interests) + floatval($OrderCost.manage) + floatval($OrderCost.cost) ,2,".","")}
+                </div>
+            </div>
+        </div>
+        {else/}
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">利息</label>
+                </div>
+                <div class="weui-cell__bd">
+                    ￥{:number_format($OrderCost.interests,2,".","")}
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">管理费</label>
+                </div>
+                <div class="weui-cell__bd">
+                    ￥{:number_format($OrderCost.manage,2,".","")}
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">手续费</label>
+                </div>
+                <div class="weui-cell__bd">
+                    ￥{:number_format($OrderCost.cost,2,".","")}
+                </div>
+            </div>
+        </div>
+        {/if}
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">实际到账</label>
+                </div>
+                <div class="weui-cell__bd">
+                    ￥{:number_format($OrderCost.deposit,2,".","")}
+                </div>
+            </div>
+            <div class="weui-cell" style="display: none;">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">到账银行</label>
+                </div>
+                <div class="weui-cell__bd">
+                    建设银行
+                </div>
+            </div>
+            <div class="weui-cell" style="display: none;">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">到账卡号</label>
+                </div>
+                <div class="weui-cell__bd">
+                    6227 32 **** 9578
+                </div>
+            </div>
+        </div>
+        <div class="weui-cells weui-cells_form">
+
+            <div class="weui-cell repay">
+                <div class="weui-cell__bd">
+                    您需要在{$OrderInfo['period']}天后还款{:number_format($OrderInfo.limit,2,".","")}元
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="weui-btn-area">
+
+        <input type="hidden" id="input_order_id" name="id" value="{:$OrderInfo.id}">
+        <input type="hidden" id="input_order_no" name="no" value="{:$OrderInfo.no}">
+        <buttom id="submit_confirm_form" class="weui-btn weui-btn_default btn-submit">确认申请</buttom>
+
+        <label for="weuiAgree" class="weui-agree">
+            <input id="weuiAgree" type="checkbox" checked="checked" class="weui-agree__checkbox">
+            <span class="weui-agree__text">我已阅读并同意<a href="{:url('Wap/Index/agreement')}">《借款协议》</a></span>
+        </label>
+    </div>
+</div>
+{/block}
+{block name="style"}{/block}
+{block name="javascript"}
+<script type="text/javascript" src="/static/js/system/order_confirm.js?r={:$JavascriptVersion}"></script>
+<script type="text/javascript">
+    //weui.alert('alert');
+
+    $(function () {
+        // 执行操作
+        var orderID = '{$OrderInfo.id}';
+        var data = {};
+        $.post("{:url('api/index/index')}", data, function(res){
+            if (res.status !== 200) {
+                console.log(res.message);
+                return null;
+            }
+            console.log(res.data);
+        }, 'json');
+        // 执行操作
+    })
+</script>
+{/block}

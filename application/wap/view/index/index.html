@@ -1,0 +1,44 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="main"}
+<div class="page login">
+    <div class="page__bd">
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell title">
+              <div class="weui-cell__hd"></div>
+              <div class="weui-cell-bd">
+                  <img alt="" src="/static/images/wx-logo.png" class="logo">
+              </div>
+            </div>
+            <div class="weui-cell input-form">
+                <div class="weui-cell__hd">
+                    <img src="/static/images/icon-phone.png" width="18" height="24" style="padding-right: 10px; display: block;">
+                </div>
+                <div class="weui-cell-bd">
+                    <input id="input_user_phone" class="weui-input" type="tel" placeholder="请输入手机号">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-btn-area">
+                <button id="btn_user_login" disabled="disabled" class="weui-btn weui-btn_primary" href="javascript:">下一步</button>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="style"}
+<link rel="stylesheet" href="/static/css/login.css">
+{/block}
+{block name="javascript"}
+<script type="text/javascript" src="/static/js/system/user_login.js?r={:$JavascriptVersion}"></script>
+<script type="text/javascript">
+    $(function () {
+        // 执行操作
+        SYS.Login.init();
+    })
+</script>
+{/block}

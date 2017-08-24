@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>{$Think.config.website.name}</title>
+    <meta name="KeyWords" content="{$Think.config.website.keywords}">
+    <meta name="Description" content="{$Think.config.website.description}">
+    {include file="public/style" /}
+</head>
+<body>
+    {include file="public/header" /}
+    <div class="container">
+        {__REPLACE__}
+    </div>
+    {include file="public/footer" /}
+    {include file="public/javascript" /}
+</body>
+</html>

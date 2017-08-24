@@ -1,0 +1,71 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="main"}
+<div class="page personal">
+    <div class="page__hd">
+        <h1 class="page__title">我的资料</h1>
+        <p class="page__desc">请认真填写以下资料</p>
+    </div>
+    <div class="page__bd">
+        <div class="weui-cells">
+            <a class="weui-cell weui-cell_access" href="{:url('Personal/base')}">
+                <div class="weui-cell__bd">
+                    <label class="weui-label">个人信息</label>
+                    <p style="font-size: 13px;color: #888888;">请完善个人信息</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+
+            <a class="weui-cell weui-cell_link" href="{:url('Personal/contacts')}">
+                <div class="weui-cell__bd">
+                    <label class="weui-label">紧急联系人</label>
+                    <p style="font-size: 13px;color: #888888;">特殊情况，可以帮助我们联系到您</p>
+                </div>
+                <div class="weui-cell__ft">
+                    {$userInfo.contacts | statusHTML}
+                </div>
+            </a>
+
+            <a class="weui-cell weui-cell_link" href="{:url('Personal/bank')}">
+                <div class="weui-cell__bd">
+                    <label class="weui-label">收款银行卡</label>
+                    <p style="font-size: 13px;color: #888888;">所借款项将发放到该卡</p>
+                </div>
+                <div class="weui-cell__ft">
+                    {$userInfo.bankcard | statusHTML}
+                </div>
+            </a>
+
+            <a class="weui-cell weui-cell_link" href="{:url('Personal/phone')}">
+                <div class="weui-cell__bd">
+                    <label class="weui-label">手机运营商</label>
+                    <p style="font-size: 13px;color: #888888;">手机运营商认证有助于加快审批</p>
+                </div>
+                <div class="weui-cell__ft">
+                    {$userInfo.phonestatus | statusHTML}
+                </div>
+            </a>
+        </div>
+        <div class="weui-cells">
+            <a class="weui-cell weui-cell_access" href="{:url('Personal/help')}">
+                <div class="weui-cell__bd">
+                    <label class="weui-label">帮助中心</label>
+                    <p style="font-size: 13px;color: #888888;">常见问题解答</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="style"}{/block}
+{block name="javascript"}
+<script type="text/javascript">
+    $(function () {
+        // 执行操作
+    })
+</script>
+{/block}

@@ -1,0 +1,73 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="main"}
+<div class="page personal">
+    <div class="page__hd">
+        <h1 class="page__title">其他信息</h1>
+        <p class="page__desc">完善其他个人资料</p>
+    </div>
+    <div class="page__bd">
+        <div class="weui-cells weui-cells_form">
+            <div id="show_user_degrees" class="weui-cell weui-cell_access">
+                <div class="weui-cell__hd">
+                    <label for="input_user_degrees" class="weui-label">学历</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="input_user_degrees" class="weui-input" type="text" value="{$info['degrees']}" placeholder="" readonly>
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div id="show_user_marriage" class="weui-cell weui-cell_access">
+                <div class="weui-cell__hd">
+                    <label for="input_user_marriage" class="weui-label">婚姻状态</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="input_user_marriage" class="weui-input" type="text" value="{$info['marriage']}" placeholder="" readonly>
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label for="input_user_qq" class="weui-label">常用QQ</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="input_user_qq" class="weui-input" value="{$info['qq']}" type="number" placeholder="请输入QQ号码">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label for="input_user_email" class="weui-label">常用Email</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="input_user_email" class="weui-input" value="{$info['email']}" type="email" placeholder="请输入email地址">
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="weui-btn-area">
+            <button id="btn_other_submit" disabled="disabled" class="weui-btn weui-btn_default">保存</button>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="style"}{/block}
+{block name="javascript"}
+<script type="text/javascript" src="/static/js/system/base_other.js?r={:$JavascriptVersion}"></script>
+<script type="text/javascript">
+    $(function () {
+        // 执行操作
+    });
+</script>
+{/block}

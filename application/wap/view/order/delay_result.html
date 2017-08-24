@@ -1,0 +1,68 @@
+{extend name="base" /}
+
+{block name="title"}{$title}{/block}
+
+{block name="style"}{/block}
+{block name="javascript"}
+<script type="text/javascript">
+    $(function () {
+        // 执行操作
+        $('#btn_delay_submit').on('click', function (e) {
+            window.location.href = "{:url('Wap/Order/getlist')}";
+        })
+    })
+</script>
+{/block}
+{block name="main"}
+<?php
+
+?>
+<div class="page orders">
+    <div class="page__bd">
+        {if condition="$Result.status neq '200' "}
+        <div class="weui-cells">
+            <div class="weui-cell repay">
+                <div class="weui-cell__bd">
+                    支付失败
+                </div>
+            </div>
+        </div>
+        {else/}
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">订单号</label>
+                </div>
+                <div class="weui-cell__bd">
+                    {:$PayResult.oid_paybill}
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">支付金额</label>
+                </div>
+                <div class="weui-cell__bd">
+                    ￥{:number_format($PayResult.money_order,2,".","")}元
+                </div>
+            </div>
+        </div>
+        <div class="weui-cells">
+            <div class="weui-cell repay">
+                <div class="weui-cell__bd">
+                    {if condition="$PayResult.result_pay eq 'SUCCESS' "}
+                        支付成功
+                    {else/}
+                        银行处理中
+                    {/if}
+                </div>
+            </div>
+        </div>
+        {/if}
+        <div class="weui-btn-area">
+            <buttom id="btn_delay_submit" class="weui-btn weui-btn_default btn-submit">
+                返回
+            </buttom>
+        </div>
+    </div>
+</div>
+{/block}

@@ -1,0 +1,200 @@
+短信发送纪录
+mihua_sms
+    id            int(10)           auto_increment     主键
+    phone         varchar(20)       ''                 电话
+    key           varchar(20)       ''                 验证码
+    send_type     tinyint           0                  短信类型 0:注册 1:找回密码 2:系统通知
+    timestamp     int(6)            0                  短信发送时间
+    desc          varchar(250)      ''                 发送信息
+
+站点信息
+mihua_site
+    id            int(10)          auto_increment      自动编号
+    name          varchar(50)      ''                  站点名称
+    key           varchar(20)      ''                  站点编码
+    rate          int(6)           0                   费率
+    manage        int(6)           0                   管理成本
+    cost          int(6)           0                   手续费
+    desc          varchar(250)     ''                  站点描述
+
+借款时间
+mihua_period 
+    `id`          int(10)          auto_increment      自动编号
+    `sid`         int(10)          0                   所属站点
+    `title`       varchar(50)      ''                  名称
+    `amount`      int(6)           0                   数量
+    `rate`        int(6)           0                   费率
+    `desc`        varchar(250)     ''                  描述
+    `status`      tinyint          0                   是否启用 0:未启用 1:启用
+借款额度
+mihua_bankroll
+    id            int(10)           auto_increment     自动编号
+    sid           int(10)           0                  所属站点
+    title         varchar(50)       ''                 名称
+    amount        int(6)            0                  数量
+    rate          int(6)            0                  费率
+    desc          varchar(250)      ''                 描述
+    status        tinyint           0                  是否启用 0:未启用 1:启用
+
+用户表
+mihua_users
+    id             int(11)          auto_increment
+    username       varchar(50)      ''                登录名 默认为电话号码,认证成功后为真实用户名
+    password       varchar(50)      ''                密码
+    phone          varchar(20)      ''                电话
+    phonecode      varchar(20)      ''                服务密码
+    phonestatus    tinyint          0                 服务商认证状态 0:未审核 1:重新认证 2:认证中 3:成功认证
+    idcard         tinyint          0                 实名认证状态  0:未审核 1:重新认证 2:认证中 3:成功认证
+    bankcard       tinyint          0                 银行卡号绑定状态  0:未绑定 1:重新绑定 2:绑定中 3:绑定认证
+    work           tinyint          0                 身份认证状态 0:未审核 1:重新认证 2:认证中  3:成功认证
+    contacts       tinyint          0                 联系人状态 0:未审核 1:重新认证 2:认证中  3:成功认证
+    city           int(6)           0                 城市
+    province       int(6)           0                 省份
+    area           int(6)           0                 区|县
+    address        varchar(250)     ''                现住地址
+    period         varchar(250)     ''                居住时
+    invite_code    varchar(20)      ''                邀请码
+    email          varchar(120)     ''                常用邮箱
+    qq             varchar(20)      ''                腾讯QQ
+    degrees        varchar(4)       ''                学历
+    marriage       varchar(4)       ''                婚姻状态
+    role           int(4)           0                 权限 8888为系统管理员
+    status         tinyint          0                 状态 0:未启用  1:黑名单 2:禁用 3:启用
+    created_time   int(11)          0                 创建时间
+
+实名认证信息
+mihua_idcard
+    id             int(11)          auto_increment,
+    uid            int(11)          0                  用户编号
+    no             varchar(50)      ''                 身份证号
+    username       varchar(250)     ''                 姓名
+    birthday       int(11)          0                  生日 时间戳
+    gender         tinyint          '9'                性别 0:女性 1:男性 9:未知
+    face           varchar(200)      0                 手持身份证图
+    face_id        varchar(50)      ''                 信审编号_手持身份证
+    front          varchar(250)     ''                 身份证正面图
+    front_id       varchar(50)      ''                 信审编号_身份证正面
+    back           varchar(250)     ''                 身份证背面图
+    back_id        varchar(50)      ''                 信审编号_身份证背面
+    status         tinyint          0                  状态 0:未审核 1:重新认证 2:认证中 3:成功认证 4:信审认证成功
+    verify_time    int(11)          0                  审核时间
+    verify_uid     int(11)          0                  审核人
+    message        varchar(250)     ''                 审核结
+    created_time   int(11)          0                  创建时间
+
+联系人资料
+mihua_contacts
+    id             int(11)          auto_increment,
+    uid            int(11)          0                   用户编号
+    relations      varchar(4)       ''                  关系编号
+    cname          varchar(50)      0                   姓名
+    mobile         varchar(20)      0                   电话
+    address        varchar(250)     ''                  详细地址
+    status         tinyint          0                   状态 0:未审核 1:重新认证 2:认证中 3:成功认证
+    verify_time    int(11)          0                   审核时间
+    verify_uid     int(11)          0                   审核人
+    message        varchar(250)     ''                  审核结
+    created_time    int(11)         0                   创建时间
+
+
+银行卡绑定
+mihua_bankcard
+    id             int(11)           auto_increment,
+    uid            int(11)           0                  用户编号
+    no             varchar(50)       ''                 银行卡号
+    card_type      tinyint           0                  卡类型 默认0:未知 2:储蓄卡 3:信用卡
+    idcard         varchar(50)       ''                 身份证号
+    username       varchar(250)      ''                 姓名
+    bank_code      varchar(20)       ''                 银行编码
+    bank_name      varchar(50)       ''                 银行名称
+    bank_province  int(6)            0                  银行地址[省]
+    bank_city      int(6)            0                  银行地址[市]
+    status         tinyint           0                  状态 0:未审核 1:重新认证 2:认证中 3:成功认证
+    agreeno        varchar(20)       ''                 签约协议号
+    verify_time    int(11)           0                  审核时间
+    verify_uid     int(11)           0                  审核人
+    message        varchar(250)      ''                 审核结果
+    created_time   int(11)           0                  创建时间
+
+工作信息
+mihua_work
+    id             int(11)           auto_increment,
+    uid            int(11)           0                   用户编号
+    province       int(6)            0                   省份
+    city           int(6)            0                   城市
+    area           int(6)            0                   区|县
+    address        varchar(250)      ''                  详细地址
+    company        varchar(250)      ''                  单位名称
+    phone          varchar(250)      ''                  单位名称联系电话
+    identity       varchar(4)        ''                  身份 SI01:学生 SI02:在职人员 SI03:企业负责人 SI04:自由职业 SI05:无业 SI06:退休 
+    job            varchar(4)        'WT99'              职位 WT01:高级领导 WT02:中级领导 WT03:一般员工 WT98:其它 WT99:未知
+    coordinate     varchar(50)       0                   坐标[经纬度] longitude,latitude
+    chsi           varchar(250)      ''                  学信网图
+    status         tinyint           0                   状态 0:未审核 1:重新认证 2:认证中 3:成功认证
+    verify_time    int(11)           0                   审核时间
+    verify_uid     int(11)           0                   审核人
+    message        varchar(250)      ''                  审核结
+    created_time   int(11)           0                   创建时间
+
+申请表
+mihua_orders
+    id             int(11)            auto_increment,
+    uid            int(11)            0                   用户编号
+    no             varchar(50)        ''                  合同编号
+    purpose        varchar(4)         ''                  借款用途
+    limit          int(11)            0                   申请额度
+    period         int(11)            0                   申请期限 5:5天 10:10天
+    deposit        int(11)            0                   到账金额
+    rate           int(4)             0                   年利率
+    insurance      int(4)             0                   保险费率
+    term           int(2)             1                   期数
+    repay_type     tinyint            4                   还款方式 1:按月归还 2:按季归还 3:按年归还 4:一次性归还 5:分期返还 9:其它
+    auditing_time  int(11)            0                   审核时间
+    expire_time    int(11)            0                   到期时间
+    pay_time       int(11)            0                   放款时间
+    expire_cost    int(11)            0                   延期总费用
+    expire_count   int(11)            4                   剩余延期次数
+    expire_info    varchar(250)      ''                   延期信息 timestamp,timestamp,timestamp
+    overdue_cost   int(11)            0                   逾期总费用
+    repay_cost     int(11)            0                   还款总金额 申请借款金额＋逾期金额
+    repay_time     int(11)            0                   还款时间
+    progress       int(4)             0                   当前进度 0:待审核 1:审核失败 10:放款中 11:放款成功 20:延期失败 21:延期申请中 22:延期成功 30:逾期中 100:还款成功
+    message        varchar(250)       ''                  审核结果
+    status         tinyint            0                   状态 0:正常 1:用户确认 2:用户取消
+    created_time   int(11)            0                   创建时间
+
+扣款订单纪录
+mihua_deduct
+    id             int(11)            auto_incremen
+    uid            int(11)            0                   用户编号
+    oid            int(11)            0                   订单编号
+    days           int(3)             5                   续期天数
+    amount         int(6)             0                   金额
+    pay_type       tinyint            0                   扣款类型 0:还款 1:第一次续期 2:第二次续期 3:第三次续期
+    status         tinyint            0                   状态 0:提交申请 1:WAITING等待支付 2:PROCESSING银行支付处理中 3:REFUND退款 4:FAILURE扣款失败 9:SUCCESS扣款成功
+    paybill        varchar(20)        ''                  连连支付订单号
+    card_no        varchar(20)        ''                  银行名称
+    bank_code      varchar(10)        ''                  银行编号
+    bank_name      varchar(50)        ''                  银行名称
+    settle_date    varchar(20)        ''                  清算日期
+    desc           varchar(250)       ''                  其他支付结果信息
+    created_time   int(11)            0                   创建时间
+
+风控结果
+mihua_risk
+    id             int(11)            auto_increment
+    uid            int(11)            0                   用户编号
+    noBusb         varchar(50)        0                   申请审核订单号
+    noBus          varchar(50)        0                   信申系统编号
+    creditLimit    int(6)             0                   授信额度
+    creditTerm     int(6)             0                   授信期数
+    reasonCode     varchar(250)       ''                  决策原因编码
+    reason         varchar(250)       ''                  决策原因编码
+    interestCode   varchar(50)        ''                  利率码
+    feeRateCode    varchar(50)        ''                  费率码
+    amtDownpay     varchar(50)        ''                  首付款
+    amtMonthrepay  varchar(50)        ''                  每期还款
+    dataProd       text                                   审批明细数据
+    status         tinyint            0                   状态
+    created_time  int(11)             0                   创建时间
+
